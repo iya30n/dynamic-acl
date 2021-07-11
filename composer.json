@@ -1,0 +1,15 @@
+{
+    "name": "iya30n/dynamic-acl",
+    "autoload": {
+        "psr-4": {
+            "Iya30n\\DynamicAcl\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "iya30n",
+            "email": "varmeziyaryasin@gmail.com"
+        }
+    ],
+    "require": {}
+}
