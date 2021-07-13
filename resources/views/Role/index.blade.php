@@ -1,3 +1,4 @@
+@extends('dynamicACL::layout')
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -5,8 +6,8 @@
 				<h3 class="card-title">لیست نقش ها</h3>
 
 				<div class="card-tools">
-					@if(auth()->user()->hasPermission('role.create'))
-					<a href="{{ route('admin.role.create') }}" role="button"
+					@if(auth()->user()->hasPermission('roles.create'))
+					<a href="{{ route('admin.roles.create') }}" role="button"
 						class="btn btn-success btn-sm btn-rounded">ایجاد نقش</a>
 					@endif
 				</div>

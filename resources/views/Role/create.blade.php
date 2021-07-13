@@ -1,3 +1,4 @@
+@extends('dynamicACL::layout')
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -6,7 +7,7 @@
       <div class="col-md-12">
         <!-- general form elements -->
         <!-- form start -->
-        <form class="form-horizontal" method="POST" action="{{ route('admin.role.store') }}">
+        <form class="form-horizontal" method="POST" action="{{ route('admin.roles.store') }}">
           @csrf
 
           <!-- role name -->
