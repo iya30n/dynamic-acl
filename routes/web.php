@@ -17,5 +17,5 @@ Route::group([
     Route::post('roles', [RoleController::class, 'store'])->name('admin.roles.store');
     Route::get('roles/{role}', [RoleController::class, 'edit'])->name('admin.roles.edit');
     Route::patch('roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
-    Route::delete('roles/{role}', [RoleController::class, 'delete'])->name('admin.roles.delete');
+    Route::get('roles/{role}/delete', [RoleController::class, 'destroy'])->name('admin.roles.delete');
 });
