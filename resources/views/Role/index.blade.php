@@ -24,7 +24,12 @@
 					<tr>
 						<td>{{ $role->name }}</td>
 						<td>{{ $role->users_count }}</td>
-						<td>{!! $role->action_buttons !!}</td>
+						<td>
+							<div class="btn-group" role="group" aria-label="Basic mixed styles example" dir="ltr">
+								<button type="button" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="ویرایش">❌</button>
+								<button type="button" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف">📝</button>
+							</div>
+						</td>
 					</tr>
 					@endforeach
 				</table>
