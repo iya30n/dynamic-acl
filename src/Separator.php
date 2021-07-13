@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DynamicAcl;
+namespace Iya30n\DynamicAcl;
 
 use Illuminate\Support\{Collection, Str};
 
