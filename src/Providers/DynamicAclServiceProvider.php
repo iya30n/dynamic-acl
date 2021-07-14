@@ -3,6 +3,7 @@
 namespace Iya30n\DynamicAcl\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Iya30n\DynamicAcl\Models\Role;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
 
 class DynamicAclServiceProvider extends ServiceProvider
@@ -25,6 +26,10 @@ class DynamicAclServiceProvider extends ServiceProvider
 
     private function registerMacros()
     {
+        MacroableModels::addMacro(config('auth.providers.users.model'), 'roles', function() {
+            return $this->belongsToMany(Role::class);
+        });
+
         MacroableModels::addMacro(config('auth.providers.users.model'), 'hasPermission', function ($access) {
             if ($access == '' || $access == 'dashboard') return true;
 
