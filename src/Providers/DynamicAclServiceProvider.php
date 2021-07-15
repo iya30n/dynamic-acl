@@ -35,7 +35,8 @@ class DynamicAclServiceProvider extends ServiceProvider
         });
 
         MacroableModels::addMacro(config('auth.providers.users.model'), 'hasPermission', function ($access) {
-            if (in_array($access, ['', 'admin', 'dashboard', 'panel'])) return true;
+            // TODO: handle acl types (uri, controller)
+            if (in_array($access, config('dynamicACL.ignore_list'))) return true;
 
             foreach ($this->roles as $role) {
                 $userPermissions = (strpos($access, '.') != false) ?
