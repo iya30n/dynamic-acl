@@ -3,7 +3,7 @@
 use Iya30n\DynamicAcl\Http\Controllers\RoleController;
 
 Route::group([
-    'middleware' => 'web',
+    'middleware' => ['web', 'dynamicAcl'],
     'prefix' => 'admin',
     'name' => 'admin.'
 ], function($router) {

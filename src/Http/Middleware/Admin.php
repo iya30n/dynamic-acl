@@ -15,22 +15,22 @@ class Admin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
-        if($this->auth->check() && $this->auth->user()->admin) {
-			// TODO: change it to handle with uri and controller
+        if ($this->auth->check() && $this->auth->user()->admin) {
+            // TODO: change it to handle with uri and controller
             $routeName = $request->route()->getName();
-			
-            if($this->auth->user()->hasPermission($routeName))
+
+            if ($this->auth->user()->hasPermission($routeName))
                 return $next($request);
 
             // flash()->warning('', 'شما دسترسی به این بخش را ندارید.');
-			// TODO: if back() is empty or user is not login anymore, redirect to login page;
-            return back();
+            // TODO: if back() is empty or user is not login anymore, redirect to login page;
+            return redirect('/');
         }
 
         return redirect('/login');

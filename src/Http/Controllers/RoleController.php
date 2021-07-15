@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Iya30n\DynamicAcl\Http\Requests\RoleRequest;
-use Iya30n\DynamicAcl\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
