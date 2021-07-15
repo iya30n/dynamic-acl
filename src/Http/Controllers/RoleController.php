@@ -26,14 +26,7 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request)
     {
-        $access = $request->access;
-        
-        isset($access['fullAccess']) && \Arr::forget($access, 'fullAccess');
-        
-		Role::create([
-            'name' => $request->name,
-            'permissions' => $access
-        ]);
+		Role::create($request->only('name', 'access'));
 
 //        flash()->success('پیغام', 'نقش با موفقیت ایجاد شد.');
         return redirect()->route('admin.roles.index');
