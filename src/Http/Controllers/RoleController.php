@@ -2,6 +2,7 @@
 
 namespace Iya30n\DynamicAcl\Http\Controllers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
@@ -25,7 +26,15 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request)
     {
-		Role::create($request->only('name', 'access'));
+        $permissions = $request->access;
+
+        if (isset($permissions['fullAccess']) && $permissions['fullAccess'] == 0)
+            Arr::forget($permissions, 'fullAccess');
+
+		Role::create([
+		    'name' => $request->name,
+            'permissions' => $permissions
+        ]);
 
 //        flash()->success('پیغام', 'نقش با موفقیت ایجاد شد.');
         return redirect()->route('admin.roles.index');
@@ -40,7 +49,10 @@ class RoleController extends Controller
 
     public function update(Role $role, RoleRequest $request)
     {
-		$role->update($request->all());
+        if (Arr::has($request, 'access.fullAccess') && $request['access.fullAccess'] == 0)
+            \Arr::forget('access', $request->access);
+
+        $role->update($request->all());
         
 //        flash()->success('پیغام', 'نقش با موفقیت بروزرسانی شد.');
         return redirect()->route('admin.roles.index');

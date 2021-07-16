@@ -8,23 +8,22 @@
                 <!-- general form elements -->
                 <!-- form start -->
                 <form class="form-horizontal" method="POST" action="{{ route('admin.roles.update', $role->id) }}">
-                @method('PATCH')
                 @csrf
+                @method('PATCH')
 
                 <!-- role name -->
                     <div class="row">
                         <div class="col col-md-4">
                             <div class="form-group">
-                                <input type="text" placeholder="نام نقش را وارد کنید" name="name"
-                                       value="{{ $role->name }}" class="form-control">
+                                <input type="text" placeholder="نام نقش را وارد کنید" name="name" class="form-control">
                             </div>
                         </div>
                         <!-- /col-md-4 -->
 
                         <div class="col col-md-4">
-                            @if(auth()->user()->hasPermission('role.update'))
+                            @if(auth()->user()->hasPermission('role.store'))
                                 <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
-                                                               value="بروزرسانی نقش">
+                                                               value="ایجاد نقش">
                                 </div>
                             @endif
                         </div>
@@ -32,7 +31,6 @@
 
                     </div>
                     <!-- /role name -->
-
 
                     <div class="row">
                         <div class="col col-md-6">
@@ -49,7 +47,7 @@
                                                     <label>
                                                         <input type="checkbox"
                                                                name="access[fullAccess]"
-                                                               {{ (isset($role['fullAccess']) && $role['fullAccess'] == 1) ? 'checked' : ''}}
+                                                               {{ (isset($role->permissions['fullAccess']) && $role->permissions['fullAccess'] == 1) ? 'checked' : '' }}
                                                                value="1">
                                                         <span>دسترسی کامل</span>
                                                     </label>
@@ -79,13 +77,13 @@
                                             <div class="col-12">
                                                 <ul style="column-count: 4; column-gap: 2rem; list-style: none; font-size: 13px;">
                                                     @foreach($value as $keyAccess)
+                                                        <?php $check = isset($role->permissions[$key]); ?>
                                                         <li>
-                                                            <?php $checked = isset($role->permissions[$key][$keyAccess['name']]) ? 'checked' : ''; ?>
                                                             <label>
                                                                 <input type="checkbox"
                                                                        name="access[{{$key}}][{{$keyAccess['name']}}]"
-                                                                       value="1" {{
-															$checked }}>
+                                                                       {{ $check ? 'checked' : '' }}
+                                                                       value="1">
                                                                 <span>{{ $keyAccess['name'] }}</span>
                                                             </label>
                                                         </li>
@@ -116,4 +114,4 @@
         <!-- /.row -->
     </div><!-- /.container-fluid -->
 </section>
-<!-- /.content --
+<!-- /.content -->
