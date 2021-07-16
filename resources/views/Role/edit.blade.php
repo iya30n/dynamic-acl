@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col col-md-4">
                             <div class="form-group">
-                                <input type="text" placeholder="نام نقش را وارد کنید" name="name" class="form-control">
+                                <input type="text" placeholder="نام نقش را وارد کنید" name="name" class="form-control" value="{{ old('name', $role->name) }}">
                             </div>
                         </div>
                         <!-- /col-md-4 -->
