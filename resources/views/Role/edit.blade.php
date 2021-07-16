@@ -23,7 +23,7 @@
                         <div class="col col-md-4">
                             @if(auth()->user()->hasPermission('role.store'))
                                 <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
-                                                               value="ایجاد نقش">
+                                                               value="ویرایش نقش">
                                 </div>
                             @endif
                         </div>
@@ -77,7 +77,7 @@
                                             <div class="col-12">
                                                 <ul style="column-count: 4; column-gap: 2rem; list-style: none; font-size: 13px;">
                                                     @foreach($value as $keyAccess)
-                                                        <?php $check = isset($role->permissions[$key]); ?>
+                                                        <?php $check = isset($role->permissions[$key][$keyAccess['name']]); ?>
                                                         <li>
                                                             <label>
                                                                 <input type="checkbox"

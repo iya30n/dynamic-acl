@@ -49,10 +49,15 @@ class RoleController extends Controller
 
     public function update(Role $role, RoleRequest $request)
     {
-        if (Arr::has($request, 'access.fullAccess') && $request['access.fullAccess'] == 0)
-            \Arr::forget('access', $request->access);
+        $permissions = $request->access;
 
-        $role->update($request->all());
+        if (isset($permissions['fullAccess']) && $permissions['fullAccess'] == 0)
+            Arr::forget($permissions, 'fullAccess');
+
+        $role->update([
+            'name' => $request->name,
+            'permissions' => $permissions
+        ]);
         
 //        flash()->success('پیغام', 'نقش با موفقیت بروزرسانی شد.');
         return redirect()->route('admin.roles.index');
