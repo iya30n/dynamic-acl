@@ -30,7 +30,7 @@ class Admin
 
             // flash()->warning('', 'شما دسترسی به این بخش را ندارید.');
             // TODO: if back() is empty or user is not login anymore, redirect to login page;
-            return redirect('/');
+            return back();
         }
 
         return redirect('/login');
