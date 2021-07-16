@@ -23,7 +23,7 @@
 					@foreach($roles as $role)
 					<tr>
 						<td>{{ $role->name }}</td>
-						<td>{{ $role->users_count }}</td>
+						<td>{{ $role->getUsersCount() }}</td>
 						<td>
 							<div class="btn-group" role="group" aria-label="Basic mixed styles example" dir="ltr">
 								<a href="{{ route('admin.roles.delete',$role->id)}}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف">❌</a>

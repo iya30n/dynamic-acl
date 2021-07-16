@@ -39,6 +39,16 @@ class Role extends Model
     }
 
     /**
+     * get count of attached admins
+     *
+     * @return integer
+     */
+    public function getUsersCount()
+    {
+        return $this->users->count();
+    }
+
+    /**
      * user relation
      * 
      * @return string
