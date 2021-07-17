@@ -6,6 +6,7 @@ use Illuminate\Routing\Router;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Iya30n\DynamicAcl\Http\Middleware\Admin;
+use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
 
 class DynamicAclServiceProvider extends ServiceProvider
@@ -26,6 +27,8 @@ class DynamicAclServiceProvider extends ServiceProvider
         $this->registerMacros();
 
         $this->registerMiddlewares();
+
+        $this->registerCommands();
     }
 
     private function registerMacros()
@@ -55,5 +58,14 @@ class DynamicAclServiceProvider extends ServiceProvider
     {
         $router = $this->app->make(Router::class);
         $router->aliasMiddleware('dynamicAcl', Admin::class);
+    }
+
+    private function registerCommands()
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                MakeAdmin::class,
+            ]);
+        }
     }
 }

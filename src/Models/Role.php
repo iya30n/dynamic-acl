@@ -8,13 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'name', 'permissions'
-    ];
+    protected $guarded = ['id'];
 
     /**
      * Set the permissions of role as serialized
