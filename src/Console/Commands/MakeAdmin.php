@@ -28,6 +28,9 @@ class MakeAdmin extends Command
                 return;
             }
 
+            if ($field == 'password')
+                $inputField = bcrypt($inputField);
+
             $admin->{$field} = $inputField;
         }
 
