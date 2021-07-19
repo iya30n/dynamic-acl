@@ -6,16 +6,16 @@ use Illuminate\Support\{Collection, Str};
 
 class Separator
 {
-	/** 
-	 * Get routes separated by uri
-	 * 
-	 * @param Illuminate\Support\Collection $routes
-	 * 
-	 * @return Array
-	 */
+    /**
+     * Get routes separated by uri
+     *
+     * @param Collection $routes
+     *
+     * @return array
+     */
 	public function byUri(Collection $routes)
 	{
-		$separetedRoutes = [];
+		$separatedRoutes = [];
 
 		foreach ($routes as $route) {
 			$routeUri = $route['uri'] ?? '';
@@ -26,22 +26,22 @@ class Separator
 
 			// $route['uri'] = $last;
 
-			$separetedRoutes[$uri][] = $route;
+			$separatedRoutes[$uri][] = $route;
 		}
 
-		return $separetedRoutes;
+		return $separatedRoutes;
 	}
 
-	/** 
-	 * Get routes separated by route name
-	 * 
-	 * @param Illuminate\Support\Collection $routes
-	 * 
-	 * @return Array
-	 */
+    /**
+     * Get routes separated by route name
+     *
+     * @param Collection $routes
+     *
+     * @return array
+     */
 	public function byName(Collection $routes)
 	{
-		$separetedRoutes = [];
+		$separatedRoutes = [];
 
 		foreach ($routes as $route) {
 			$routeName = $route['name'] ?? '';
@@ -52,24 +52,23 @@ class Separator
 
 			$route['name'] = $last;
 
-			$separetedRoutes[$name][] = $route;
+			$separatedRoutes[$name][] = $route;
 		}
 
-		return $separetedRoutes;
+		return $separatedRoutes;
 	}
 
-	/** 
-	 * Get routes of each controller
-	 * 
-	 * @param Illuminate\Support\Collection
-	 * 
-	 * @return Array
-	 */
+    /**
+     * Get routes of each controller
+     *
+     * @param Collection $routes
+     * @return array
+     */
 	public function byController(Collection $routes)
 	{
 		$controllersBasePath = config('dynamicACL.controllers_path');
 
-		$separetedRoutes = [];
+		$separatedRoutes = [];
 
 		foreach ($routes as $route) {
 			$action = Str::after($route['action'], $controllersBasePath);
@@ -78,9 +77,9 @@ class Separator
 
 			$controller = Str::replaceLast("@$method", '', $action);
 
-			$separetedRoutes[$controller][] = $route;
+			$separatedRoutes[$controller][] = $route;
 		};
 
-		return $separetedRoutes;
+		return $separatedRoutes;
 	}
 }

@@ -2,16 +2,17 @@
 
 namespace Iya30n\DynamicAcl;
 
+use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 
 class Route
 {
-	/** 
-	 * Get all routes
-	 * 
-	 * @return Illuminate\Support\Collection
-	 */
+    /**
+     * Get all routes
+     *
+     * @return Collection
+     */
 	private function getCollected(): Collection
 	{
 		Artisan::call('route:list --json');
@@ -21,17 +22,17 @@ class Route
 		);
 	}
 
-	/** 
-	 * Get developer defined routes (filter by controllers namespace)
-	 * 
-	 * @return Illuminate\Support\Collection
-	 */
+    /**
+     * Get developer defined routes (filter by controllers namespace)
+     *
+     * @return Collection
+     */
 	public function getUserDefined(): Collection
 	{
 		return $this->getCollected()->filter(function ($route) {
 			$controllerBasePath = config('dynamicACL.controllers_path');
 
-			if (\Str::contains($route['action'], $controllerBasePath))
+			if (Str::contains($route['action'], $controllerBasePath))
 				return $route;
 		});
 	}
