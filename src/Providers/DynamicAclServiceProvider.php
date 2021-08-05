@@ -2,6 +2,7 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Router;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
@@ -35,19 +36,15 @@ class DynamicAclServiceProvider extends ServiceProvider
     {
         $authModel = config('auth.providers.users.model');
 
-        MacroableModels::addMacro($authModel, 'roles', function () {
-//            return $this->belongsToMany(Role::class, 'role_user', 'role_id', 'user_id');
-
-            $rolesId = collect(\DB::select("select role_id, user_id from role_user where user_id = " . $this->id))->pluck('role_id');
-
-            return Role::find($rolesId);
+         MacroableModels::addMacro($authModel, 'roles', function () {
+             return $this->belongsToMany(Role::class);
         });
 
         MacroableModels::addMacro($authModel, 'hasPermission', function ($access) {
             // TODO: handle acl types (uri, controller)
             if (in_array($access, config('dynamicACL.ignore_list'))) return true;
 
-            foreach ($this->roles() as $role) {
+            foreach ($this->roles()->get() as $role) {
                 $userPermissions = (strpos($access, '.') != false) ?
                     \Arr::dot($role->permissions) :
                     $role->permissions;
