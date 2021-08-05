@@ -25,10 +25,12 @@
 						<td>{{ $role->name }}</td>
 						<td>{{ $role->getUsersCount() }}</td>
 						<td>
+							@if (! $role->is_super_admin())
 							<div class="btn-group" role="group" aria-label="Basic mixed styles example" dir="ltr">
 								<a href="{{ route('admin.roles.delete',$role->id)}}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="حذف">❌</a>
 								<a href="{{ route('admin.roles.edit', $role->id)}}" class="btn btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="ویرایش">📝</a>
 							</div>
+							@endif
 						</td>
 					</tr>
 					@endforeach

@@ -47,6 +47,16 @@ class Role extends Model
     }
 
     /**
+     * check if current rule is super admin role
+     *
+     * @return bool
+     */
+    public function is_super_admin()
+    {
+        return $this->name == 'super_admin';
+    }
+
+    /**
      * user relation
      * 
      * @return string

@@ -49,7 +49,6 @@ class DynamicAclServiceProvider extends ServiceProvider
                     \Arr::dot($role->permissions) :
                     $role->permissions;
 
-                // TODO: move fullAccess check to top of foreach
                 return isset($userPermissions[$access]) || isset($userPermissions['fullAccess']);
             }
 
