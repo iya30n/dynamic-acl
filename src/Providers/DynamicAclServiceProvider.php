@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Router;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
-use Iya30n\DynamicAcl\Http\Middleware\Admin;
+use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
 use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
 
@@ -60,6 +60,7 @@ class DynamicAclServiceProvider extends ServiceProvider
     {
         $router = $this->app->make(Router::class);
         $router->aliasMiddleware('dynamicAcl', Admin::class);
+        $router->aliasMiddleware('authorize', Authorize::class);
     }
 
     private function registerCommands()

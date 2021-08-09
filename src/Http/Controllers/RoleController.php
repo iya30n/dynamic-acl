@@ -10,7 +10,12 @@ use Iya30n\DynamicAcl\Http\Requests\RoleRequest;
 
 class RoleController extends Controller
 {
-    public function test(Role $role)
+    public function test($id)
+    {
+
+    }
+
+    public function oldTest(Role $role)
     {
         // if controller key exists on request()->route()->getAction(), that's controller
         // else it's closure
