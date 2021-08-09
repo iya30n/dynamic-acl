@@ -19,3 +19,13 @@ Route::group([
     Route::patch('roles/{role}', [RoleController::class, 'update'])->name('admin.roles.update');
     Route::get('roles/{role}/delete', [RoleController::class, 'destroy'])->name('admin.roles.delete');
 });
+
+//Route::get('/test', [RoleController::class, 'test']);
+
+Route::get('/test', function(\Iya30n\DynamicAcl\Models\Role $role) {
+    $closure = request()->route()->getAction()['uses'];
+
+    $parameters = (new \ReflectionFunction($closure))->getParameters()[0]->getType()->getName();
+
+    dd($parameters);
+});
