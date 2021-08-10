@@ -16,6 +16,8 @@ class Authorize
      */
     public function handle($request, Closure $next)
     {
+        if (auth()->user()->hasPermission('fullAccess')) return $next($request);
+
         foreach (request()->route()->parameters as $param) {
             if ($param->user_id && $param->user_id !== auth()->id())
                 return back();
