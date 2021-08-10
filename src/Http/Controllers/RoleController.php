@@ -10,37 +10,6 @@ use Iya30n\DynamicAcl\Http\Requests\RoleRequest;
 
 class RoleController extends Controller
 {
-    public function test($id)
-    {
-
-    }
-
-    public function oldTest(Role $role)
-    {
-        // if controller key exists on request()->route()->getAction(), that's controller
-        // else it's closure
-        // TODO: check if we can get closure parameters
-        // TODO: try to get controller@method called in Resource Controllers. NOTE: maybe you can't get method from Resource Controller
-
-        $action = request()->route()->getAction()['controller']; // "Iya30n\DynamicAcl\Http\Controllers\RoleController@test"
-
-        $method = \Str::after($action, '@'); // "test"
-
-        $controller = \Str::replaceLast("@$method", '', $action); // "Iya30n\DynamicAcl\Http\Controllers\RoleController"
-
-        $result = new \ReflectionMethod($controller, $method);
-
-        /*
-        {
-         name: "Iya30n\DynamicAcl\Models\Role"
-         allowsNull: false
-         isBuiltin: false
-        }
-        */
-        $modelName = $result->getParameters()[0]->getType()->getName(); // "Iya30n\DynamicAcl\Models\Role"
-        dd($modelName);
-    }
-
     public function index()
     {
 		$roles = Role::latest()->paginate();

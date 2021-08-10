@@ -22,29 +22,38 @@ class Authorize
     public function handle($request, Closure $next)
     {
         foreach (static::getMethodParamsFrom(request()) as $param) {
-            dump($param);
+            $entity = app($param);
+
+            if ($entity->user_id && $entity->user_id == $this->auth->id)
+                return $next($request);
         }
 
-        die();
+        return back();
     }
 
     private static function getMethodParamsFrom($request)
     {
         if (array_key_exists('controller', $request->route()->getAction())) {
             $action = $request->route()->getAction()['controller'];
+
             $method = \Str::after($action, '@');
+
             $controller = \Str::replaceLast("@$method", '', $action);
 
             $reflected = new \ReflectionMethod($controller, $method);
-
-            foreach ($reflected->getParameters() as $param) {
-                dd($param);
-                yield $param->getType()->getName();
-            }
         }
 
-        if (array_key_exists('uses', $request->route()->getAction())) {
-
+        if ($request->route()->getAction()['uses'] instanceof \Closure) {
+            $closure = $request->route()->getAction()['uses'];
+            $reflected = (new \ReflectionFunction($closure));
         }
+
+        foreach ($reflected->getParameters() as $param) {
+            $type = $param->getType();
+
+            if ($type)
+                yield $type->getName();
+        }
+
     }
 }
