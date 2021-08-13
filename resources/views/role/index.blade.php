@@ -1,4 +1,10 @@
 @extends('dynamicACL::layout')
+
+@section('tab_title')
+	لیست نقش‌ها
+@endsection
+
+@section('content')
 <div class="row">
 	<div class="col-12">
 		<div class="card">
@@ -42,3 +48,4 @@
 		<!-- /.card -->
 	</div>
 </div><!-- /.row -->
+@endsection
