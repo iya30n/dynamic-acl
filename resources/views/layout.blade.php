@@ -8,9 +8,21 @@
     <title>@yield('tab_title', 'Document')</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <style>
+        @font-face {
+            font-family: Vazir;
+            src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot');
+            src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot?#iefix') format('embedded-opentype'),
+            url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff2') format('woff2'),
+            url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff') format('woff'),
+            url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.ttf') format('truetype');
+            font-weight: normal;
+        }
+
         body {
-            background: #f4f6f9
+            background: #f4f6f9;
+            font-family: Vazir;
         }
 
         .card {
@@ -21,6 +33,10 @@
         .card-header {
             background: #007bff;
             color: white;
+        }
+
+        .card-tools {
+            float: left;
         }
     </style>
 </head>

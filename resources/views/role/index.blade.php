@@ -8,7 +8,7 @@
 <div class="row">
 	<div class="col-12">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header" style="background: white; color: #212529;">
 				<h3 class="card-title">لیست نقش ها</h3>
 
 				<div class="card-tools">
