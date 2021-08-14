@@ -32,7 +32,9 @@ class Route
 		return $this->getCollected()->filter(function ($route) {
 			$controllerBasePath = config('dynamicACL.controllers_path');
 
-			if (Str::contains($route['action'], $controllerBasePath))
+			$isDynamical = Str::contains($route['middleware'], 'DynamicAcl');
+
+			if (Str::contains($route['action'], $controllerBasePath) && $isDynamical)
 				return $route;
 		});
 	}
