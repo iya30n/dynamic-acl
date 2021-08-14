@@ -31,7 +31,7 @@
         }
 
         .card-header {
-            background: #007bff;
+            background: #334858;
             color: white;
         }
 
