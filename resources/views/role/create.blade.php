@@ -36,8 +36,8 @@
                 <!-- /role name -->
 
                 <div class="row">
-                    <div class="col col-md-6">
-                        <div class="card" style="margin-top:2%">
+                    <div class="col col-md-4">
+                        <div class="card">
                             <div class="card-header text-center">
                                 دسترسی‌های پیشفرض
                             </div>
@@ -64,9 +64,9 @@
 
                 <div class="row">
                     @foreach($permissions as $key => $value)
-                        <div class="col col-md-6">
+                        <div class="col col-md-4">
 
-                            <div class="card" style="margin-top:2%">
+                            <div class="card">
 
                                 <div class="card-header text-center">
                                     {{ str_replace('.', ' => ', $key) }}

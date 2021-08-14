@@ -8,11 +8,26 @@
     <title>@yield('tab_title', 'Document')</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        body {
+            background: #f4f6f9
+        }
+
+        .card {
+            box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+            margin-top: 2%;
+        }
+
+        .card-header {
+            background: #007bff;
+            color: white;
+        }
+    </style>
 </head>
 <body dir="rtl">
     <div class="mt-5">
         <div class="content">
-            <div class="container container-fluid">
+            <div class="container-fluid">
                 @yield('content')
             </div>
         </div>
