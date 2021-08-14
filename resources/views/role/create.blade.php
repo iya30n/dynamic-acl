@@ -47,12 +47,13 @@
                                     <div class="col-12">
                                         <ul>
                                             <li>
-                                                <label>
-                                                    <input type="checkbox"
-                                                           name="access[fullAccess]"
-                                                           value="1">
-                                                    <span>دسترسی کامل</span>
-                                                </label>
+                                                <input class="form-check-input"
+                                                       id="permission_check_full_access"
+                                                       type="checkbox"
+                                                       name="access[fullAccess]"
+                                                       value="1">
+                                                <label class="form-check-label" for="permission_check_full_access">دسترسی
+                                                    کامل</label>
                                             </li>
                                         </ul>
                                     </div>
@@ -80,10 +81,13 @@
                                             <ul style="column-count: 4; column-gap: 2rem; list-style: none; font-size: 13px;">
                                                 @foreach($value as $keyAccess)
                                                     <li>
-                                                        <label>
-                                                            <input type="checkbox"
-                                                                   name="access[{{$key}}][{{$keyAccess['name']}}]"
-                                                                   value="1">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               id="permission_check_{{$keyAccess['name']}}"
+                                                               name="access[{{$key}}][{{$keyAccess['name']}}]"
+                                                               value="1">
+                                                        <label class="form-check-label"
+                                                               for="permission_check_{{$keyAccess['name']}}">
                                                             <span>{{ $keyAccess['name'] }}</span>
                                                         </label>
                                                     </li>
