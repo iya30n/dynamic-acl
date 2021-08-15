@@ -22,9 +22,9 @@ It's fast to running and simple to use.
 > **NOTE:** you should define name for your routes.
 
 
-~~composer require iya30n/dynamic-acl~~
-
-i didn't publish it yet. you should install it locally. [more information](https://getcomposer.org/doc/05-repositories.md#path)
+```
+composer require iya30n/dynamic-acl
+```
 
 
 ### publish config file
