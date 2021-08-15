@@ -21,11 +21,11 @@ Install and enjoy.
 
 > **NOTE:** you should define name for your routes.
 
-```php
+
 ~~composer require iya30n/dynamic-acl~~
 
-i didn't publish it yet. you should install it locally. ([more information](https://getcomposer.org/doc/05-repositories.md#path))
-```
+i didn't publish it yet. you should install it locally. [more information](https://getcomposer.org/doc/05-repositories.md#path)
+
 
 ### publish config file
 
