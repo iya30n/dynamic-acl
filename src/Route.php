@@ -2,6 +2,8 @@
 
 namespace Iya30n\DynamicAcl;
 
+use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
@@ -15,11 +17,15 @@ class Route
      */
 	private function getCollected(): Collection
 	{
-		Artisan::call('route:list --json');
+	    $routes = resolve(RouteList::class)->handle();
+
+	    return collect($routes);
+
+		/*Artisan::call('route:list --json');
 
 		return collect(
 			json_decode(Artisan::output(), true)
-		);
+		);*/
 	}
 
     /**
