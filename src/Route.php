@@ -25,13 +25,6 @@ class Route
     protected $headers = ['Domain', 'Method', 'URI', 'Name', 'Action', 'Middleware'];
 
     /**
-     * The columns to display when using the "compact" flag.
-     *
-     * @var string[]
-     */
-    protected $compactColumns = ['method', 'uri', 'action'];
-
-    /**
      * Create a new route command instance.
      *
      * @param \Illuminate\Routing\Router $router
@@ -84,7 +77,7 @@ class Route
                 'action' => ltrim($route->getActionName(), '\\'),
                 'middleware' => $this->getMiddleware($route),
             ];
-        })->filter()->all();
+        })->all();
 
         return $this->pluckColumns($routes);
     }
