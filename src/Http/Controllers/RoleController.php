@@ -19,7 +19,7 @@ class RoleController extends Controller
 
     public function create()
     {
-        $permissions = app(ACL::class)->getRoutes();
+        $permissions = ACL::getRoutes();
 
         return view('dynamicACL::role.create', compact('permissions'));
     }
@@ -42,7 +42,7 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
-        $permissions = app(ACL::class)->getRoutes();
+        $permissions = ACL::getRoutes();
 
         return view('dynamicACL::role.edit',  compact('role', 'permissions'));
     }

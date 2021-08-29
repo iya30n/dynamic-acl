@@ -3,8 +3,12 @@
 return [
 	'controllers_path' => 'App\\Http\\Controllers',
 
-	// ['uri', 'route_name', 'controller@method']
-	'control_with' => 'route_name',
+    /*
+     * "name" means route name
+     * "method" means Controller@method
+     * "uri" means route uri
+     */
+	'separator_driver' => 'name',
 
     'ignore_list' => ['', 'admin', 'admin.', 'admin.dashboard', 'dashboard', 'panel']
 ];

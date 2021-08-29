@@ -2,18 +2,20 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Routing\Router;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
 use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
+use Iya30n\DynamicAcl\Separators\Separator;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
 
 class DynamicAclServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->setSeparatorDriver();
+
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'dynamicACL');
@@ -30,6 +32,11 @@ class DynamicAclServiceProvider extends ServiceProvider
         $this->registerMiddlewares();
 
         $this->registerCommands();
+    }
+
+    protected function setSeparatorDriver()
+    {
+        $this->app->bind('acl_handler', Separator::class);
     }
 
     private function registerMacros()
