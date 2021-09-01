@@ -20,7 +20,9 @@ class ControllerMethod extends BaseSeparator
             $method = Str::afterLast($action, '@');
 
             $controller = Str::replaceLast("@$method", '', $action);
+            $controller = trim($controller, '\\');
 
+            $route['name'] = $method;
             $separatedRoutes[$controller][] = $route;
         }
 
