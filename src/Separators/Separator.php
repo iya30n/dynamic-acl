@@ -3,7 +3,7 @@
 namespace Iya30n\DynamicAcl\Separators;
 
 use Illuminate\Support\Manager;
-use Iya30n\DynamicAcl\Separators\{ControllerMethod, RouteName, Uri};
+use Iya30n\DynamicAcl\Separators\{RouteName, Uri};
 
 class Separator extends Manager
 {
@@ -15,11 +15,6 @@ class Separator extends Manager
     protected function createNameDriver()
     {
         return resolve(RouteName::class);
-    }
-
-    protected function createMethodDriver()
-    {
-        return resolve(ControllerMethod::class);
     }
 
     protected function createUriDriver()

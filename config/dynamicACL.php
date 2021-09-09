@@ -5,7 +5,6 @@ return [
 
     /*
      * "name" means route name
-     * "method" means Controller@method
      * "uri" means route uri
      */
 	'separator_driver' => 'name',
