@@ -17,4 +17,6 @@ abstract class BaseSeparator
     }
 
     abstract public function getRoutes();
+
+    abstract public function checkAccess($access, $permissions): bool;
 }
