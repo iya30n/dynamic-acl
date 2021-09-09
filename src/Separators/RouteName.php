@@ -26,4 +26,13 @@ class RouteName extends BaseSeparator
 
         return $separatedRoutes;
     }
+
+    public function checkAccess($access, $permissions): bool
+    {
+        $userPermissions = (strpos($access, '.') != false) ?
+            \Arr::dot($permissions) :
+            $permissions;
+
+        return isset($userPermissions[$access]) || isset($userPermissions['fullAccess']);
+    }
 }

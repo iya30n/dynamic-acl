@@ -26,4 +26,9 @@ class Uri extends BaseSeparator
 
         return $separatedRoutes;
     }
+
+    public function checkAccess($access, $permissions): bool
+    {
+        // TODO: write checker for routes uri
+    }
 }

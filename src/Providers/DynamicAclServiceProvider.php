@@ -3,6 +3,7 @@
 namespace Iya30n\DynamicAcl\Providers;
 
 use Illuminate\Routing\Router;
+use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
@@ -48,15 +49,10 @@ class DynamicAclServiceProvider extends ServiceProvider
         });
 
         MacroableModels::addMacro($authModel, 'hasPermission', function ($access) {
-            // TODO: handle acl types (uri, controller)
             if (in_array($access, config('dynamicACL.ignore_list'))) return true;
 
             foreach ($this->roles()->get() as $role) {
-                $userPermissions = (strpos($access, '.') != false) ?
-                    \Arr::dot($role->permissions) :
-                    $role->permissions;
-
-                return isset($userPermissions[$access]) || isset($userPermissions['fullAccess']);
+                return ACL::checkAccess($access, $role->permissions);
             }
 
             return false;
