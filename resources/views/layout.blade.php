@@ -36,11 +36,11 @@
         }
 
         .card-tools {
-            float: left;
+            float: {{ $alignment == 'rtl' ? 'left' : 'right' }}
         }
     </style>
 </head>
-<body dir="rtl">
+<body dir="{{$alignment}}">
     <div class="mt-5">
         <div class="content">
             <div class="container-fluid">

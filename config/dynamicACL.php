@@ -1,6 +1,11 @@
 <?php
 
 return [
+    /**
+     * between rtl, ltr
+     */
+    'alignment' => 'ltr',
+
 	'controllers_path' => 'App\\Http\\Controllers',
 
     /*
