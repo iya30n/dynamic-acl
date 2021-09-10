@@ -21,6 +21,7 @@ class DynamicAclServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'dynamicACL');
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'dynamicACL');
 
         $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
 

@@ -1,7 +1,7 @@
 @extends('dynamicACL::layout')
 
 @section('tab_title')
-    ویرایش نقش | {{$role->name}}
+    {{__('dynamicACL::roles.edit_the_role', ['role_name' => $role->name])}}
 @endsection
 
 @section('content')
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col col-md-4">
                         <div class="form-group">
-                            <input type="text" placeholder="نام نقش را وارد کنید" name="name" class="form-control"
+                            <input type="text" placeholder="{{__('dynamicACL::roles.insert_role_name')}}" name="name" class="form-control"
                                    value="{{ old('name', $role->name) }}">
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                     <div class="col col-md-4">
                         @if(auth()->user()->hasPermission('role.store'))
                             <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
-                                                           value="ویرایش نقش">
+                                                           value="{{__('dynamicACL::roles.edit_role')}}">
                             </div>
                         @endif
                     </div>
@@ -40,9 +40,7 @@
                 <div class="row">
                     <div class="col col-md-4">
                         <div class="card">
-                            <div class="card-header text-center">
-                                دسترسی‌های پیشفرض
-                            </div>
+                            <div class="card-header text-center">{{__('dynamicACL::roles.default_permissions')}}</div>
 
                             <div class="card-body">
                                 <div class="row">
@@ -55,7 +53,7 @@
                                                        name="access[fullAccess]"
                                                        {{ (isset($role->permissions['fullAccess']) && $role->permissions['fullAccess'] == 1) ? 'checked' : '' }}
                                                        value="1">
-                                                <label class="form-check-label" for="permission_check_full_access">دسترسی کامل</label>
+                                                <label class="form-check-label" for="permission_check_full_access">{{__('dynamicACL::roles.full_access')}}</label>
                                             </li>
                                         </ul>
                                     </div>

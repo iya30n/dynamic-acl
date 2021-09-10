@@ -1,7 +1,7 @@
 @extends('dynamicACL::layout')
 
 @section('tab_title')
-    ایجاد نقش
+    {{__('dynamicACL::roles.create_role')}}
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col col-md-4">
                         <div class="form-group">
-                            <input type="text" placeholder="نام نقش را وارد کنید" name="name" class="form-control">
+                            <input type="text" placeholder="{{__('dynamicACL::roles.insert_role_name')}}" name="name" class="form-control">
                         </div>
                     </div>
                     <!-- /col-md-4 -->
@@ -26,7 +26,7 @@
                     <div class="col col-md-4">
                         @if(auth()->user()->hasPermission('role.store'))
                             <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
-                                                           value="ایجاد نقش">
+                                                           value="{{__('dynamicACL::roles.create_role')}}">
                             </div>
                         @endif
                     </div>
@@ -38,9 +38,7 @@
                 <div class="row">
                     <div class="col col-md-4">
                         <div class="card">
-                            <div class="card-header text-center">
-                                دسترسی‌های پیشفرض
-                            </div>
+                            <div class="card-header text-center">{{__('dynamicACL::roles.default_permissions')}}</div>
 
                             <div class="card-body">
                                 <div class="row">
@@ -52,8 +50,7 @@
                                                        type="checkbox"
                                                        name="access[fullAccess]"
                                                        value="1">
-                                                <label class="form-check-label" for="permission_check_full_access">دسترسی
-                                                    کامل</label>
+                                                <label class="form-check-label" for="permission_check_full_access">{{__('dynamicACL::roles.full_access')}}</label>
                                             </li>
                                         </ul>
                                     </div>
