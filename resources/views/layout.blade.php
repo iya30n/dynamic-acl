@@ -36,7 +36,7 @@
         }
 
         .card-tools {
-            float: left;
+            float: {{ $alignment == 'rtl' ? 'left' : 'right' }}
         }
     </style>
 </head>

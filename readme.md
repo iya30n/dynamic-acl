@@ -63,7 +63,7 @@ you can create new one, edit or delete them.
 
 after publish vendor you can change config on **config/dynamicACL.php** file.
 
-- **alignment:** you can change ui alignment to rtl or ltr
+- **alignment:** you can change UI alignment to rtl or ltr. also when you change your lang, roles crud will be changing in (fa, en).
 - **controllers_path:** this is your controllers namespace.
 - **ignore_list:** you can add your routes to be ignore on check permissions.
 
