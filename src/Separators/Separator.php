@@ -16,9 +16,4 @@ class Separator extends Manager
     {
         return resolve(RouteName::class);
     }
-
-    protected function createUriDriver()
-    {
-        return resolve(Uri::class);
-    }
 }
