@@ -40,7 +40,7 @@
         }
     </style>
 </head>
-<body dir="rtl">
+<body dir="{{$alignment}}">
     <div class="mt-5">
         <div class="content">
             <div class="container-fluid">

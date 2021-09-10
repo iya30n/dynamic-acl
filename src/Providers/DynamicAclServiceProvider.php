@@ -3,6 +3,7 @@
 namespace Iya30n\DynamicAcl\Providers;
 
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\View;
 use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
@@ -33,6 +34,8 @@ class DynamicAclServiceProvider extends ServiceProvider
         $this->registerMiddlewares();
 
         $this->registerCommands();
+
+        $this->registerViewComposers();
     }
 
     protected function setSeparatorDriver()
@@ -73,5 +76,14 @@ class DynamicAclServiceProvider extends ServiceProvider
                 MakeAdmin::class,
             ]);
         }
+    }
+
+    protected function registerViewComposers()
+    {
+       View::composer('dynamicACL::layout', function($view) {
+           $view->with([
+               'alignment' => config('dynamicACL.alignment', 'ltr')
+           ]);
+       });
     }
 }
