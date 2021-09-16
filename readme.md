@@ -22,7 +22,7 @@ It's fast to running and simple to use.
 > **NOTE:** you should define name for your routes.
 
 
-```
+```php
 composer require iya30n/dynamic-acl
 ```
 
@@ -80,12 +80,15 @@ just add **dynamicAcl** middleware to your routes.
 get list of the roles and use it on your own admin/user CRUD views.
 
 you can use Role model to write your own queries and get list of the roles.
+
 ```php
 use Iya30n\DynamicAcl\Models\Role;
 ```
+
 ---
 <h3 id="sync_user_roles">sync user roles</h3>
 you can use these methods on your CRUD user methods.
+
 ```php
 $user->roles()->sync([1, 2, 3,...]);
 // or
@@ -93,11 +96,14 @@ $user->roles()->attach([1, 2, 3,...]);
 // or
 $user->roles()->dettach([1, 2, 3,...]);
 ```
+
 ---
 <h3 id="get_user_roles">get user roles</h3>
+
 ```php
 $user->roles()->get();
 ```
+
 ---
 
 <h3 id="simple_policy">how to use dynamic policy?</h3>
