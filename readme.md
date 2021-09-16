@@ -108,7 +108,7 @@ $user->roles()->get();
 
 <h3 id="check_user_access">check user access manually</h3>
 
-use hasPermission method on user and pass the route name.
+call hasPermission method on user and pass the route name.
 
 ```php
 $user->hasPermission('admin.articles');
