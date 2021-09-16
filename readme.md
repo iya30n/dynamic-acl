@@ -15,7 +15,7 @@ It's fast to running and simple to use.
 
 ---
 
-<span id="installation"><b>installation</b></span>
+<span id="installation"><h3>Installation</h3></span>
 
 > **NOTE:** you need to make your authentication (session based) system before.
 
@@ -63,7 +63,7 @@ you can create new one, edit or delete them.
 
 after publish vendor you can change config on **config/dynamicACL.php** file.
 
-- **alignment:** you can change UI alignment to rtl or ltr. also when you change your lang, roles crud will be changing in (fa, en).
+- **alignment:** you can change UI alignment to rtl or ltr. also when you change your lang, roles CRUD will be changing in (fa, en).
 - **controllers_path:** this is your controllers namespace.
 - **ignore_list:** you can add your routes to be ignore on check permissions.
 
@@ -72,9 +72,32 @@ after publish vendor you can change config on **config/dynamicACL.php** file.
 <h3 id="check_routes">how to use the ACL?</h3>
 
 just add **dynamicAcl** middleware to your routes.
+> now you'll see list of the routes with **dynamicAcl** middleware on **localhost:8000/admin/roles/create**.
+>
+> also this middleware will check your admin access to current route.
+---
+<h3 id="list_of_the_roles">access to the roles</h3>
+get list of the roles and use it on your own admin/user CRUD views.
 
-> this middleware will check your admin access to current route.
-
+you can use Role model to write your own queries and get list of the roles.
+```php
+use Iya30n\DynamicAcl\Models\Role;
+```
+---
+<h3 id="sync_user_roles">sync user roles</h3>
+you can use these methods on your CRUD user methods.
+```php
+$user->roles()->sync([1, 2, 3,...]);
+// or
+$user->roles()->attach([1, 2, 3,...]);
+// or
+$user->roles()->dettach([1, 2, 3,...]);
+```
+---
+<h3 id="get_user_roles">get user roles</h3>
+```php
+$user->roles()->get();
+```
 ---
 
 <h3 id="simple_policy">how to use dynamic policy?</h3>
