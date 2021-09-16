@@ -106,6 +106,16 @@ $user->roles()->get();
 
 ---
 
+<h3 id="check_user_access">check user access manually</h3>
+
+use hasPermission method on user and pass the route name.
+
+```php
+$user->hasPermission('admin.articles');
+```
+
+---
+
 <h3 id="simple_policy">how to use dynamic policy?</h3>
 
 > **NOTE:** you should use route model binding on your controllers.
