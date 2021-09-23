@@ -13,6 +13,7 @@ return [
     'list_title'  => 'لیست نقش‌ها',
     'create_role' => 'ایجاد نقش',
     'edit_role' => 'ویرایش نقش',
+    'update_role' => 'ثبت تغییرات',
     'role_name'   => 'نام نقش',
     'users_count' => 'تعداد کاربران',
 

@@ -13,6 +13,7 @@ return [
     'list_title'  => 'Roles',
     'create_role' => 'Create Role',
     'edit_role' => 'Edit Role',
+    'update_role' => 'Update',
     'role_name'   => 'role name',
     'users_count' => 'users count',
 
