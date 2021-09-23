@@ -9,7 +9,7 @@ class Separator extends Manager
 {
     public function getDefaultDriver()
     {
-        return config('dynamicACL.separator_driver');
+        return config('dynamicACL.separator_driver', 'name');
     }
 
     protected function createNameDriver()

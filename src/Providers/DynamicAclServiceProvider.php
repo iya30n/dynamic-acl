@@ -2,6 +2,7 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\View;
 use Iya30n\DynamicAcl\ACL;
@@ -52,14 +53,17 @@ class DynamicAclServiceProvider extends ServiceProvider
              return $this->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'hasPermission', function ($access) {
-            if (in_array($access, config('dynamicACL.ignore_list'))) return true;
+        MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $relationKey = 'user_id') {
+            if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
-            foreach ($this->roles()->get() as $role) {
-                return ACL::checkAccess($access, $role->permissions);
-            }
+            $hasAccess = false;
+            foreach ($this->roles()->get() as $role)
+                $hasAccess = ACL::checkAccess($access, $role->permissions);
 
-            return false;
+            if ($hasAccess && $entity instanceof Model && $relationId = $entity->getOriginal($relationKey))
+                $hasAccess = $relationId == $this->id;
+
+            return $hasAccess;
         });
     }
 
