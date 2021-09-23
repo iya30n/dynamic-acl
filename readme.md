@@ -118,6 +118,17 @@ $user->hasPermission('admin.articles');
 auth()->user()->hasPermission('admin.articles');
 ```
 
+also you can check relatoin_id if user has access to his own entity:
+```php
+$user->hasPermission('admin.articles', $article);
+```
+
+with custom relation_key:
+```php
+$user->hasPermission('admin.articles', $article, 'owner_id');
+```
+
+
 ---
 
 <h3 id="simple_policy">how to use dynamic policy?</h3>
