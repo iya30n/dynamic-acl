@@ -123,7 +123,7 @@ also you can check relatoin_id if user has access to his own entity:
 $user->hasPermission('admin.articles', $article);
 ```
 
-with custom relation_key:
+with custom relation_key (default is 'user_id'):
 ```php
 $user->hasPermission('admin.articles', $article, 'owner_id');
 ```
