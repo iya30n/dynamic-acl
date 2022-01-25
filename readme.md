@@ -138,5 +138,6 @@ $user->hasPermission('admin.articles', $article, 'owner_id');
 it's very simple too.
 
 just add **authorize** middleware to your routes.
+it gets a parameter as a foreign key (default is user_id).
 
-> this middleware will check user_id on your entity.
+> this middleware will check the foreign key on your entity.
