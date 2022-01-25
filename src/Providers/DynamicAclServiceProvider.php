@@ -49,6 +49,8 @@ class DynamicAclServiceProvider extends ServiceProvider
     {
         $authModel = config('auth.providers.users.model');
 
+        throw_if(!class_exists($authModel), new \Exception("The class \"$authModel\" does not exists"));
+
          MacroableModels::addMacro($authModel, 'roles', function () {
              return $this->belongsToMany(Role::class);
         });
