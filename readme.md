@@ -107,21 +107,22 @@ $user->roles()->get();
 call hasPermission method on user and pass the route name.
 
 ```php
-$user->hasPermission('admin.articles');
-
-// or
-
-auth()->user()->hasPermission('admin.articles');
+auth()->user()->hasPermission('admin.articles.create');
 ```
 
-also you can check relatoin_id if user has access to his own entity:
+check if user has access to any routes of an entity:
 ```php
-$user->hasPermission('admin.articles', $article);
+auth()->user()->hasPermission('admin.articles.*')
+```
+
+also you can check if user has access to his own entity:
+```php
+$user->hasPermission('admin.articles.update', $article);
 ```
 
 with custom relation_key (default is 'user_id'):
 ```php
-$user->hasPermission('admin.articles', $article, 'owner_id');
+$user->hasPermission('admin.articles.update', $article, 'owner_id');
 ```
 
 
