@@ -87,14 +87,10 @@ use Iya30n\DynamicAcl\Models\Role;
 
 ---
 <h3 id="sync_user_roles">sync user roles</h3>
-you can use these methods on your CRUD user methods.
+you can use sync, attach, dettach method to assign roles to a user.
 
 ```php
 $user->roles()->sync([1, 2, 3,...]);
-// or
-$user->roles()->attach([1, 2, 3,...]);
-// or
-$user->roles()->dettach([1, 2, 3,...]);
 ```
 
 ---
