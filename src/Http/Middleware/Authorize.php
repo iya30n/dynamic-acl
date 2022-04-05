@@ -14,12 +14,19 @@ class Authorize
      * @param \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $foreignKey = "user_id")
     {
+        $foreignKey = trim($foreignKey);
+
         if (auth()->user()->hasPermission('fullAccess')) return $next($request);
 
         foreach (request()->route()->parameters as $param) {
-            if ($param->user_id && $param->user_id !== auth()->id())
+            $relationId = $param->getOriginal($foreignKey);
+
+            if ($relationId == null && $className = get_class($param))
+                throw new \Exception("The foreign key \"$foreignKey\" does not exists on $className");
+
+            if ($relationId !== auth()->id())
                 return back();
         }
 

@@ -2,21 +2,27 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\View;
+use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
 use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
+use Iya30n\DynamicAcl\Separators\Separator;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
 
 class DynamicAclServiceProvider extends ServiceProvider
 {
     public function boot()
     {
+        $this->setSeparatorDriver();
+
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
 
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'dynamicACL');
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'dynamicACL');
 
         $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
 
@@ -30,29 +36,36 @@ class DynamicAclServiceProvider extends ServiceProvider
         $this->registerMiddlewares();
 
         $this->registerCommands();
+
+        $this->registerViewComposers();
+    }
+
+    protected function setSeparatorDriver()
+    {
+        $this->app->bind('acl_handler', Separator::class);
     }
 
     private function registerMacros()
     {
         $authModel = config('auth.providers.users.model');
 
+        throw_if(!class_exists($authModel), new \Exception("The class \"$authModel\" does not exists"));
+
          MacroableModels::addMacro($authModel, 'roles', function () {
              return $this->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'hasPermission', function ($access) {
-            // TODO: handle acl types (uri, controller)
-            if (in_array($access, config('dynamicACL.ignore_list'))) return true;
+        MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $relationKey = 'user_id') {
+            if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
-            foreach ($this->roles()->get() as $role) {
-                $userPermissions = (strpos($access, '.') != false) ?
-                    \Arr::dot($role->permissions) :
-                    $role->permissions;
+            $hasAccess = false;
+            foreach ($this->roles()->get() as $role)
+                $hasAccess = ACL::checkAccess($access, $role->permissions);
 
-                return isset($userPermissions[$access]) || isset($userPermissions['fullAccess']);
-            }
+            if ($hasAccess && $entity instanceof Model && $relationId = $entity->getOriginal($relationKey))
+                $hasAccess = $relationId == $this->id;
 
-            return false;
+            return $hasAccess;
         });
     }
 
@@ -70,5 +83,14 @@ class DynamicAclServiceProvider extends ServiceProvider
                 MakeAdmin::class,
             ]);
         }
+    }
+
+    protected function registerViewComposers()
+    {
+       View::composer('dynamicACL::layout', function($view) {
+           $view->with([
+               'alignment' => config('dynamicACL.alignment', 'ltr')
+           ]);
+       });
     }
 }

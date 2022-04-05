@@ -2,38 +2,81 @@
 
 namespace Iya30n\DynamicAcl;
 
+use Closure;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Artisan;
 
 class Route
 {
     /**
-     * Get all routes
+     * The router instance.
      *
-     * @return Collection
+     * @var \Illuminate\Routing\Router
      */
-	private function getCollected(): Collection
-	{
-		Artisan::call('route:list --json');
-
-		return collect(
-			json_decode(Artisan::output(), true)
-		);
-	}
+    protected $router;
 
     /**
-     * Get developer defined routes (filter by controllers namespace)
+     * Create a new route command instance.
+     *
+     * @param \Illuminate\Routing\Router $router
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->router = resolve(Router::class);
+    }
+
+    /**
+     * Execute the console command.
      *
      * @return Collection
      */
-	public function getUserDefined(): Collection
-	{
-		return $this->getCollected()->filter(function ($route) {
-			$controllerBasePath = config('dynamicACL.controllers_path');
+    public function getUserDefined(): Collection
+    {
+        $routes = $this->router->getRoutes();
 
-			if (Str::contains($route['action'], $controllerBasePath))
-				return $route;
-		});
-	}
+        $routes = collect($routes)->map(function ($route) {
+            return [
+                'uri' => $route->uri(),
+                'name' => $route->getName(),
+                'action' => ltrim($route->getActionName(), '\\'),
+                'middleware' => $this->getMiddleware($route),
+            ];
+        });
+
+        return $this->getAclRoutes($routes);
+    }
+
+    /**
+     * Get the middleware for the route.
+     *
+     * @param \Illuminate\Routing\Route $route
+     * @return string
+     */
+    protected function getMiddleware($route)
+    {
+        return collect($this->router->gatherRouteMiddleware($route))->map(function ($middleware) {
+            return $middleware instanceof Closure ? 'Closure' : $middleware;
+        })->implode("\n");
+    }
+
+    /**
+     * Get only routes contains DynamicAcl middleware
+     *
+     * @return Collection
+     */
+    protected function getAclRoutes($routes): Collection
+    {
+        return $routes->filter(function ($route) {
+            $controllerBasePath = config('dynamicACL.controllers_path');
+
+            $isDynamical = Str::contains($route['middleware'], 'DynamicAcl');
+
+            $inIgnores = in_array($route['name'], config('dynamicACL.ignore_list', []));
+
+            if (Str::contains($route['action'], $controllerBasePath) && $isDynamical && !$inIgnores)
+                return $route;
+        });
+    }
 }
