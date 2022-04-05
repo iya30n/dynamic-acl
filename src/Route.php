@@ -69,12 +69,14 @@ class Route
     protected function getAclRoutes($routes): Collection
     {
         return $routes->filter(function ($route) {
-			$controllerBasePath = config('dynamicACL.controllers_path');
+            $controllerBasePath = config('dynamicACL.controllers_path');
 
-			$isDynamical = Str::contains($route['middleware'], 'DynamicAcl');
+            $isDynamical = Str::contains($route['middleware'], 'DynamicAcl');
 
-			if (Str::contains($route['action'], $controllerBasePath) && $isDynamical)
-				return $route;
-		});
+            $inIgnores = in_array($route['name'], config('dynamicACL.ignore_list', []));
+
+            if (Str::contains($route['action'], $controllerBasePath) && $isDynamical && !$inIgnores)
+                return $route;
+        });
     }
 }
