@@ -5,6 +5,9 @@
             "Iya30n\\DynamicAcl\\": "src/"
         }
     },
+    "autoload-dev": {
+        "classmap": ["tests/TestCase.php"]
+    },
     "authors": [
         {
             "name": "iya30n",
@@ -12,6 +15,8 @@
         }
     ],
     "require": {
+        "php": "7.4.*|^8.0|^8.1",
+        "laravel/framework":"7.*|8.*|9.*",
         "javoscript/laravel-macroable-models": "^1.0"
     },
     "extra": {
@@ -20,5 +25,14 @@
                 "Iya30n\\DynamicAcl\\Providers\\DynamicAclServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^7.3",
+        "mockery/mockery": "^1.5"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php ./vendor/bin/testbench package:discover --ansi"
+        ]
     }
 }
