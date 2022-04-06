@@ -29,7 +29,9 @@ class Admin
                 return $next($request);
 
             // flash()->warning('', 'شما دسترسی به این بخش را ندارید.');
-            // TODO: if back() is empty or user is not login anymore, redirect to login page;
+            if (url()->previous() == url()->current())
+                return redirect('/');
+
             return back();
         }
 

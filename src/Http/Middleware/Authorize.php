@@ -26,8 +26,12 @@ class Authorize
             if ($relationId == null && $className = get_class($param))
                 throw new \Exception("The foreign key \"$foreignKey\" does not exists on $className");
 
-            if ($relationId !== auth()->id())
+            if ($relationId !== auth()->id()) {
+                if (url()->previous() == url()->current())
+                    return redirect('/');
+
                 return back();
+            }
         }
 
         return $next($request);
