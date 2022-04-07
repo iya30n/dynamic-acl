@@ -29,10 +29,5 @@
     "require-dev": {
         "orchestra/testbench": "^7.3",
         "mockery/mockery": "^1.5"
-    },
-    "scripts": {
-        "post-autoload-dump": [
-            "@php ./vendor/bin/testbench package:discover --ansi"
-        ]
     }
 }
