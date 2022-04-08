@@ -1,7 +1,6 @@
 <?php
 
 use Iya30n\DynamicAcl\Route;
-use Tests\Dependencies\User;
 
 class TestRoute extends TestCase
 {
@@ -9,6 +8,8 @@ class TestRoute extends TestCase
 	{
 		$routes = resolve(Route::class)->getUserDefined();
 
-        dd($routes);
+		// dd($routes);
+
+		$this->assertEquals(get_class($routes), "Illuminate\Support\Collection");
 	}
 }
