@@ -28,6 +28,8 @@ class TestHasPermission extends TestCase
 
 		dd($fakeUser); */
 
-//		dd($this->user->name);
+		// dd($this->user->name);
+
+		$this->assertTrue(true);
 	}
 }
