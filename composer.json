@@ -28,6 +28,7 @@
     },
     "require-dev": {
         "orchestra/testbench": "^7.3",
-        "mockery/mockery": "^1.5"
+        "mockery/mockery": "^1.5",
+        "phpunit/phpunit": "^9.5"
     }
 }
