@@ -2,11 +2,11 @@
 
 namespace Tests\Dependencies;
 
-use Illuminate\Database\Eloquent\Model;
-
+// use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Orchestra\Testbench\Concerns\WithFactories;
 
-class User extends Model 
+class User extends AuthUser 
 {
     use WithFactories;
 

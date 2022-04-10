@@ -1,6 +1,7 @@
 <?php
 
 use Iya30n\DynamicAcl\ACL;
+use Iya30n\DynamicAcl\Models\Role;
 use Iya30n\DynamicAcl\Route;
 
 class TestAclFacade extends TestCase
@@ -15,12 +16,31 @@ class TestAclFacade extends TestCase
 		$this->assertIsArray($routes['admin.roles']);
 		$this->assertIsArray($routes['admin']);
 
-		foreach($routes['admin.roles'] as $route) {
+		foreach ($routes['admin.roles'] as $route) {
 			$this->assertEquals(array_keys($route), ['uri', 'name', 'action', 'middleware']);
 		}
 
-		foreach($routes['admin'] as $route) {
+		foreach ($routes['admin'] as $route) {
 			$this->assertEquals(array_keys($route), ['uri', 'name', 'action', 'middleware']);
+		}
+	}
+
+	public function test_checkAccess_method_on_AclFacade()
+	{
+		$role = Role::create([
+			'name' => 'super_admin',
+			'permissions' => ['fullAccess' => 1]
+		]);
+
+		$this->admin->roles()->sync($role->id);
+
+		$routes = resolve(Route::class)->getUserDefined();
+		$adminRoles = $this->admin->roles();
+
+		foreach ($routes as $route) {
+			foreach ($adminRoles as $role) {
+				$this->assertTrue(ACL::checkAccess($route['name'], $role->permissions));
+			}
 		}
 	}
 }
