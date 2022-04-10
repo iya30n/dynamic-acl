@@ -4,6 +4,15 @@ use Tests\Dependencies\User;
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->loadMigrationsFrom(__DIR__ . '/Dependencies/database/migrations');
+
+        $this->artisan('migrate', ['--database' => 'dynamicAcl'])->run();
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -25,6 +34,14 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
                     'model' => User::class
                 ]
             ]
+        ]);
+
+        // Setup default database to use sqlite :memory:
+        $app['config']->set('database.default', 'dynamicAcl');
+        $app['config']->set('database.connections.dynamicAcl', [
+            'driver'   => 'sqlite',
+            'database' => ':memory:',
+            'prefix'   => '',
         ]);
     }
 
