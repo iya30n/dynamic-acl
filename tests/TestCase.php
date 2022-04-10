@@ -4,6 +4,8 @@ use Tests\Dependencies\User;
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
 {
+    protected User $admin;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -11,6 +13,8 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
         $this->loadMigrationsFrom(__DIR__ . '/Dependencies/database/migrations');
 
         $this->artisan('migrate', ['--database' => 'dynamicAcl'])->run();
+
+        $this->createAdmin();
     }
 
     protected function getPackageProviders($app)
@@ -61,5 +65,14 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
         $router->get('admin/posts{post}', function () {
             return 'single post';
         })->name('admin.posts.show');
+    }
+
+    private function createAdmin()
+    {
+        $this->user = User::create([
+			'name' => 'test', 
+			'email' => 'test@gmail.com', 
+			'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi' // password
+		]);
     }
 }
