@@ -35,7 +35,7 @@ class TestAclFacade extends TestCase
 		$this->admin->roles()->sync($role->id);
 
 		$routes = resolve(Route::class)->getUserDefined();
-		$adminRoles = $this->admin->roles();
+		$adminRoles = $this->admin->roles()->get();
 
 		foreach ($routes as $route) {
 			foreach ($adminRoles as $role) {
