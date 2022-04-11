@@ -11,16 +11,16 @@ class TestAclFacade extends TestCase
 		$routes = ACL::getRoutes();
 
 		$this->assertArrayHasKey('admin.roles', $routes);
-		$this->assertArrayHasKey('admin', $routes);
+		$this->assertArrayHasKey('admin.posts', $routes);
 
 		$this->assertIsArray($routes['admin.roles']);
-		$this->assertIsArray($routes['admin']);
+		$this->assertIsArray($routes['admin.posts']);
 
 		foreach ($routes['admin.roles'] as $route) {
 			$this->assertEquals(array_keys($route), ['uri', 'name', 'action', 'middleware']);
 		}
 
-		foreach ($routes['admin'] as $route) {
+		foreach ($routes['admin.posts'] as $route) {
 			$this->assertEquals(array_keys($route), ['uri', 'name', 'action', 'middleware']);
 		}
 	}

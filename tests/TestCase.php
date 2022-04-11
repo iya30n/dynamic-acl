@@ -60,11 +60,11 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
     {
         $router->get('admin/posts', function () {
             return 'post list';
-        })->middleware('DynamicAcl')->name('admin.posts');
+        })->middleware('DynamicAcl')->name('admin.posts.index');
 
-        $router->get('admin/posts{post}', function () {
+        $router->get('admin/posts/{post}', function () {
             return 'single post';
-        })->name('admin.posts.show');
+        })->middleware('DynamicAcl')->name('admin.posts.show');
     }
 
     private function createAdmin()
