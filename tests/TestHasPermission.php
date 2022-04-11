@@ -1,21 +1,32 @@
 <?php
 
-use Tests\Dependencies\User;
+use Iya30n\DynamicAcl\Models\Role;
 
 class TestHasPermission extends TestCase
 {
-	public function testIfUserHasAccess()
+	public function test_super_admin_check_access()
 	{
-		/* $authModel = config('auth.providers.users.model');
+		$role = Role::create([
+			'name' => 'super_admin',
+			'permissions' => ['fullAccess' => 1]
+		]);
 
-		dd($authModel->find(1)); */
+		$this->admin->roles()->sync($role->id);
 
-		/* $fakeUser = User::factory(1)->make();
+		$this->assertTrue($this->admin->hasPermission('admin.posts.index'));
+		$this->assertTrue($this->admin->hasPermission('admin.posts.show'));
+	}
 
-		dd($fakeUser); */
+	public function test_hasPermission_method_on_user_model()
+	{
+		$role = Role::create([
+			'name' => 'access to index',
+			'permissions' => ['admin.posts' => ['index' => 1]]
+		]);
 
-		// dd($this->user->name);
+		$this->admin->roles()->sync($role->id);
 
-		$this->assertTrue(true);
+		$this->assertTrue($this->admin->hasPermission('admin.posts.index'));
+		$this->assertFalse($this->admin->hasPermission('admin.posts.show'));
 	}
 }
