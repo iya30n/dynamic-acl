@@ -1,5 +1,6 @@
 <?php
 
+use Iya30n\DynamicAcl\Http\Middleware\Admin;
 use Tests\Dependencies\User;
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
@@ -32,6 +33,16 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
         ]);
 
         $app['config']->set('auth', [
+            'defaults' => [
+                'guard' => 'web',
+                'passwords' => 'users',
+            ],
+            'guards' => [
+                'web' => [
+                    'driver' => 'session',
+                    'provider' => 'users',
+                ],
+            ],
             'providers' => [
                 'users' => [
                     'driver' => 'eloquent',
@@ -60,11 +71,11 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
     {
         $router->get('admin/posts', function () {
             return 'post list';
-        })->middleware('DynamicAcl')->name('admin.posts.index');
+        })->middleware(Admin::class)->name('admin.posts.index');
 
         $router->get('admin/posts/{post}', function () {
             return 'single post';
-        })->middleware('DynamicAcl')->name('admin.posts.show');
+        })->middleware(Admin::class)->name('admin.posts.show');
     }
 
     private function createAdmin()

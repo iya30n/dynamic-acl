@@ -22,7 +22,6 @@ class Admin
     public function handle($request, Closure $next)
     {
         if ($this->auth->check()) {
-            // TODO: change it to handle with uri and controller
             $routeName = $request->route()->getName();
 
             if ($this->auth->user()->hasPermission($routeName))
