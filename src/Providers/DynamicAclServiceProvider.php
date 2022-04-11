@@ -51,8 +51,12 @@ class DynamicAclServiceProvider extends ServiceProvider
 
         throw_if(!class_exists($authModel), new \Exception("The class \"$authModel\" does not exists"));
 
-         MacroableModels::addMacro($authModel, 'roles', function () {
+        /* MacroableModels::addMacro($authModel, 'roles', function () {
              return $this->belongsToMany(Role::class);
+        }); */
+
+        $authModel::resolveRelationUsing('roles', function ($userModel){
+            return $userModel->belongsToMany(Role::class);
         });
 
         MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $relationKey = 'user_id') {
@@ -62,8 +66,10 @@ class DynamicAclServiceProvider extends ServiceProvider
             foreach ($this->roles()->get() as $role)
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
 
-            if ($hasAccess && $entity instanceof Model && $relationId = $entity->getOriginal($relationKey))
+            if ($hasAccess && $entity instanceof Model) {
+                $relationId = $entity->getOriginal($relationKey);
                 $hasAccess = $relationId == $this->id;
+            }
 
             return $hasAccess;
         });

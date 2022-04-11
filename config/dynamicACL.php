@@ -2,16 +2,25 @@
 
 return [
     /**
-     * between rtl, ltr
+     * rtl || ltr
      */
     'alignment' => 'ltr',
-
-	'controllers_path' => 'App\\Http\\Controllers',
 
     /*
      * "name" means route name
      */
-	'separator_driver' => 'name',
+    'separator_driver' => 'name',
 
-    'ignore_list' => ['', 'admin', 'admin.', 'admin.dashboard', 'dashboard', 'panel']
+    'ignore_list' => [
+        '',
+        'admin',
+        'admin.',
+        'admin.dashboard',
+        'dashboard',
+        'panel',
+        'login',
+        'logout',
+        'admin.login',
+        'admin.logout'
+    ]
 ];
