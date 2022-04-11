@@ -1,6 +1,7 @@
 <?php
 
 use Iya30n\DynamicAcl\Models\Role;
+use Tests\Dependencies\Post;
 
 class TestAdminMiddleware extends TestCase
 {
@@ -29,7 +30,13 @@ class TestAdminMiddleware extends TestCase
 
 		$this->admin->roles()->sync($role->id);
 
+		$post = Post::create([
+			'user_id' => $this->admin->id,
+			'title' => 'first post',
+			'content' => 'first post'
+		]);
+
 		$this->actingAs($this->admin)->get('/admin/posts')->assertOk();
-		$this->actingAs($this->admin)->get('/admin/posts/1')->assertRedirect();
+		$this->actingAs($this->admin)->get('/admin/posts/' . $post->id)->assertRedirect();
 	}
 }

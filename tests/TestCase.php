@@ -1,6 +1,8 @@
 <?php
 
 use Iya30n\DynamicAcl\Http\Middleware\Admin;
+use Iya30n\DynamicAcl\Http\Middleware\Authorize;
+use Tests\Dependencies\Post;
 use Tests\Dependencies\User;
 
 abstract class TestCase extends Orchestra\Testbench\TestCase
@@ -69,13 +71,17 @@ abstract class TestCase extends Orchestra\Testbench\TestCase
      */
     protected function defineRoutes($router)
     {
+        $router->bind('post', function($post) {
+            return Post::find($post);
+        });
+
         $router->get('admin/posts', function () {
             return 'post list';
         })->middleware(Admin::class)->name('admin.posts.index');
 
-        $router->get('admin/posts/{post}', function () {
-            return 'single post';
-        })->middleware(Admin::class)->name('admin.posts.show');
+        $router->get('admin/posts/{post}', function (Post $post) {
+            return $post->title;
+        })->middleware([\Illuminate\Routing\Middleware\SubstituteBindings::class, Admin::class, Authorize::class])->name('admin.posts.show');
     }
 
     private function createAdmin()
