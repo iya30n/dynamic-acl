@@ -29,6 +29,8 @@ class RouteName extends BaseSeparator
 
     public function checkAccess($access, $permissions): bool
     {
+        if (isset($permissions['fullAccess'])) return true;
+
         if (strpos($access, '.*') != false) {
             $access = str_replace(".*", "", $access);
             return array_key_exists($access, $permissions);
@@ -37,8 +39,6 @@ class RouteName extends BaseSeparator
         $userPermissions = (strpos($access, '.') != false) ?
                             \Arr::dot($permissions) :
                             $permissions;
-
-        if (isset($userPermissions['fullAccess'])) return true;
 
         return isset($userPermissions[$access]);
     }
