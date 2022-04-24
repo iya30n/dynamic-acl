@@ -19,8 +19,6 @@ class DynamicAclServiceProvider extends ServiceProvider
     {
         $this->setSeparatorDriver();
 
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'dynamicACL');
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'dynamicACL');
 
