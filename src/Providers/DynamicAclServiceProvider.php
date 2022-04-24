@@ -28,7 +28,8 @@ class DynamicAclServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../config/dynamicACL.php' => config_path('dynamicACL.php'),
-            __DIR__ . '/../../database/migrations' => database_path('migrations')
+            
+            __DIR__ . '/../../database/migrations/2019_10_03_999999_create_roles_table.php' => base_path('/database/migrations/' . date('Y_m_d') . '_999999_create_roles_table.php'),
         ]);
 
         $this->registerMacros();
