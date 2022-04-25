@@ -61,8 +61,11 @@ class DynamicAclServiceProvider extends ServiceProvider
         MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $relationKey = 'user_id') {
             if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
+            if( ! $this->allRoles)
+                $this->allRoles = $this->roles()->get();
+
             $hasAccess = false;
-            foreach ($this->roles()->get() as $role)
+            foreach ($this->allRoles as $role)
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
 
             if ($hasAccess && $entity instanceof Model) {
