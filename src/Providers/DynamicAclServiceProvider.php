@@ -65,8 +65,10 @@ class DynamicAclServiceProvider extends ServiceProvider
                 $this->allRoles = $this->roles()->get();
 
             $hasAccess = false;
-            foreach ($this->allRoles as $role)
+            foreach ($this->allRoles as $role) {
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
+                if($hasAccess) break;
+            }
 
             if ($hasAccess && $entity instanceof Model) {
                 $relationId = $entity->getOriginal($relationKey);
