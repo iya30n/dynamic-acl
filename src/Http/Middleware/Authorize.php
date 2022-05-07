@@ -3,7 +3,7 @@
 namespace Iya30n\DynamicAcl\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Database\Eloquent\Model;
 
 class Authorize
 {
@@ -20,7 +20,15 @@ class Authorize
 
         if (auth()->user()->hasPermission('fullAccess')) return $next($request);
 
-        foreach (request()->route()->parameters as $param) {
+        foreach (request()->route()->parameters as $key => $param) {
+            if (! $param instanceof Model) {
+                $modelNamespace = "\\App\\Models\\" . ucfirst($key);
+
+                if (! class_exists($modelNamespace)) continue;
+
+                $param = app($modelNamespace)->findOrFail($param);
+            }
+
             $relationId = $param->getOriginal($foreignKey);
 
             if ($relationId == null && $className = get_class($param))
