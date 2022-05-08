@@ -54,11 +54,11 @@ class DynamicAclServiceProvider extends ServiceProvider
              return $this->belongsToMany(Role::class);
         }); */
 
-        $authModel::resolveRelationUsing('roles', function ($userModel){
+        $authModel::resolveRelationUsing('roles', function ($userModel) {
             return $userModel->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $relationKey = 'user_id') {
+        MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $foreignKey = null) {
             if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
             if( ! $this->allRoles)
@@ -67,12 +67,17 @@ class DynamicAclServiceProvider extends ServiceProvider
             $hasAccess = false;
             foreach ($this->allRoles as $role) {
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
+
                 if($hasAccess) break;
             }
 
             if ($hasAccess && $entity instanceof Model) {
-                $relationId = $entity->getOriginal($relationKey);
-                $hasAccess = $relationId == $this->id;
+
+                $relationId = $entity->getOriginal(
+                    $foreignKey ?? $this->getForeignKey()
+                );
+
+                $hasAccess = $relationId == $entity->getOriginal($this->getKeyName());
             }
 
             return $hasAccess;

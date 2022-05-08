@@ -14,11 +14,14 @@ class Authorize
      * @param \Closure $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $foreignKey = "user_id")
+    public function handle($request, Closure $next, $foreignKey = null)
     {
-        $foreignKey = trim($foreignKey);
+        $user = auth()->user();
 
-        if (auth()->user()->hasPermission('fullAccess')) return $next($request);
+        $foreignKey = $foreignKey ? trim($foreignKey) : $user->getForeignKey();
+
+        if ($user->hasPermission('fullAccess'))
+            return $next($request);
 
         foreach (request()->route()->parameters as $key => $param) {
             if (! $param instanceof Model) {
@@ -31,10 +34,9 @@ class Authorize
 
             $relationId = $param->getOriginal($foreignKey);
 
-            if ($relationId == null && $className = get_class($param))
-                throw new \Exception("The foreign key \"$foreignKey\" does not exists on $className");
+            throw_if( ! $relationId, new \Exception("The foreign key \"$foreignKey\" does not exists on " . get_class($param)));
 
-            if ($relationId !== auth()->id()) {
+            if ($relationId !== $user->getOriginal($user->getKeyName())) {
                 if (url()->previous() == url()->current())
                     return redirect('/');
 
