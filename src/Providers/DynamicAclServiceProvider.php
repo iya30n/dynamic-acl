@@ -66,6 +66,8 @@ class DynamicAclServiceProvider extends ServiceProvider
 
             $hasAccess = false;
             foreach ($this->allRoles as $role) {
+                if (ACL::checkAccess('fullAccess', $role->permissions)) return true;
+                
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
 
                 if($hasAccess) break;
