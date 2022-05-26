@@ -18,30 +18,16 @@ class Authorize
     {
         $user = auth()->user();
 
-        $foreignKey = $foreignKey ? trim($foreignKey) : $user->getForeignKey();
-
         if ($user->hasPermission('fullAccess'))
             return $next($request);
 
-        foreach (request()->route()->parameters as $key => $param) {
-            if (! $param instanceof Model) {
-                $modelNamespace = "\\App\\Models\\" . ucfirst($key);
+        foreach ($request->route()->parameters as $param) {
+            if ($user->hasAccessToEntity($param, $foreignKey)) continue;
 
-                if (! class_exists($modelNamespace)) continue;
+            if (url()->previous() == url()->current())
+                return redirect('/');
 
-                $param = app($modelNamespace)->findOrFail($param);
-            }
-
-            $relationId = $param->getOriginal($foreignKey);
-
-            throw_if( ! $relationId, new \Exception("The foreign key \"$foreignKey\" does not exists on " . get_class($param)));
-
-            if ($relationId !== $user->getOriginal($user->getKeyName())) {
-                if (url()->previous() == url()->current())
-                    return redirect('/');
-
-                return back();
-            }
+            return back();
         }
 
         return $next($request);

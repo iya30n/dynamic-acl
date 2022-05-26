@@ -21,19 +21,18 @@ class Admin
      */
     public function handle($request, Closure $next)
     {
-        if ($this->auth->check()) {
-            $routeName = $request->route()->getName();
+        if ($this->auth->guest())
+            return redirect('/login');
 
-            if ($this->auth->user()->hasPermission($routeName))
-                return $next($request);
+        $routeName = $request->route()->getName();
 
-            // flash()->warning('', 'شما دسترسی به این بخش را ندارید.');
-            if (url()->previous() == url()->current())
-                return redirect('/');
+        if ($this->auth->user()->hasPermission($routeName))
+            return $next($request);
 
-            return back();
-        }
+        // flash()->warning('', 'شما دسترسی به این بخش را ندارید.');
+        if (url()->previous() == url()->current())
+            return redirect('/');
 
-        return redirect('/login');
+        return back();
     }
 }

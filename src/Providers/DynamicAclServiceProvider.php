@@ -58,6 +58,25 @@ class DynamicAclServiceProvider extends ServiceProvider
             return $userModel->belongsToMany(Role::class);
         });
 
+        MacroableModels::addMacro($authModel, 'hasAccessToEntity', function ($entity, $foreignKey = null) {
+            if ( ! $entity instanceof Model && ! is_array($entity)) return true;
+
+            if (is_array($entity)) {
+                $entityName = array_key_first($entity);
+                $modelNamespace = "\\App\\Models\\" . ucfirst($entityName);
+
+                if (! class_exists($modelNamespace)) return true;
+
+                $entity = app($modelNamespace)->findOrFail($entity[$entityName]);
+            }
+
+            $relationId = $entity->getOriginal(
+                $foreignKey ?? $this->getForeignKey()
+            );
+
+            return $relationId == $entity->getOriginal($this->getKeyName());
+        });
+
         MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $foreignKey = null) {
             if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
@@ -70,19 +89,10 @@ class DynamicAclServiceProvider extends ServiceProvider
                 
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
 
-                if($hasAccess) break;
+                if ($hasAccess) break;
             }
 
-            if ($hasAccess && $entity instanceof Model) {
-
-                $relationId = $entity->getOriginal(
-                    $foreignKey ?? $this->getForeignKey()
-                );
-
-                $hasAccess = $relationId == $entity->getOriginal($this->getKeyName());
-            }
-
-            return $hasAccess;
+            return $hasAccess && $this->hasAccessToEntity($entity, $foreignKey);
         });
     }
 
