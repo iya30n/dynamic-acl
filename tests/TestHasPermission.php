@@ -31,7 +31,10 @@ class TestHasPermission extends TestCase
 
 		$this->admin->roles()->sync($role->id);
 
-		$this->assertTrue($this->admin->hasPermission('admin.posts.index'));
+        $this->expectException(\Symfony\Component\Routing\Exception\RouteNotFoundException::class);
+        $this->admin->hasPermission('');
+
+        $this->assertTrue($this->admin->hasPermission('admin.posts.index'));
 		$this->assertFalse($this->admin->hasPermission('admin.posts.show'));
 	}
 
