@@ -54,6 +54,6 @@ class TestAuthorizeMiddleware extends TestCase
 
 		$this->actingAs($this->admin)->get('/admin/posts')->assertOk();
 		$this->actingAs($this->admin)->get('/admin/posts/' . $firstPost->id)->assertOk();
-		$this->actingAs($this->admin)->get('/admin/posts/' . $secondPost->id)->assertRedirect();
+		$this->actingAs($this->admin)->get('/admin/posts/' . $secondPost->id)->assertRedirect('/');
 	}
 }

@@ -13,7 +13,7 @@ class RoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->hasPermission('admin.roles');
+        return $this->user()->hasPermission('admin.roles.*');
     }
 
     /**

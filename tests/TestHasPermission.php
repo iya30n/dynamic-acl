@@ -31,7 +31,7 @@ class TestHasPermission extends TestCase
 
 		$this->admin->roles()->sync($role->id);
 
-		$this->assertTrue($this->admin->hasPermission('admin.posts.index'));
+        $this->assertTrue($this->admin->hasPermission('admin.posts.index'));
 		$this->assertFalse($this->admin->hasPermission('admin.posts.show'));
 	}
 

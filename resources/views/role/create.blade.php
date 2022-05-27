@@ -24,7 +24,7 @@
                     <!-- /col-md-4 -->
 
                     <div class="col col-md-4">
-                        @if(auth()->user()->hasPermission('role.store'))
+                        @if(auth()->user()->hasPermission('admin.roles.store'))
                             <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
                                                            value="{{__('dynamicACL::roles.create_role')}}">
                             </div>

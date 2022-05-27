@@ -4,7 +4,9 @@ namespace Iya30n\DynamicAcl\Providers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
@@ -12,6 +14,7 @@ use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
 use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
 use Iya30n\DynamicAcl\Separators\Separator;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class DynamicAclServiceProvider extends ServiceProvider
 {
@@ -58,7 +61,26 @@ class DynamicAclServiceProvider extends ServiceProvider
             return $userModel->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'hasPermission', function ($access, $entity = null, $foreignKey = null) {
+        MacroableModels::addMacro($authModel, 'isOwner', function ($entity, $foreignKey = null) {
+            if ( ! $entity instanceof Model && ! is_array($entity)) return true;
+
+            if (is_array($entity)) {
+                $entityName = array_key_first($entity);
+                $modelNamespace = "\\App\\Models\\" . ucfirst($entityName);
+
+                if (! class_exists($modelNamespace)) return true;
+
+                $entity = app($modelNamespace)->findOrFail($entity[$entityName]);
+            }
+
+            $relationId = $entity->getOriginal(
+                $foreignKey ?? $this->getForeignKey()
+            );
+
+            return $relationId == $this->getOriginal($this->getKeyName());
+        });
+
+        MacroableModels::addMacro($authModel, 'hasPermission', function (string $access, $entity = null, $foreignKey = null) {
             if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
 
             if( ! $this->allRoles)
@@ -70,19 +92,10 @@ class DynamicAclServiceProvider extends ServiceProvider
                 
                 $hasAccess = ACL::checkAccess($access, $role->permissions);
 
-                if($hasAccess) break;
+                if ($hasAccess) break;
             }
 
-            if ($hasAccess && $entity instanceof Model) {
-
-                $relationId = $entity->getOriginal(
-                    $foreignKey ?? $this->getForeignKey()
-                );
-
-                $hasAccess = $relationId == $entity->getOriginal($this->getKeyName());
-            }
-
-            return $hasAccess;
+            return $hasAccess && $this->isOwner($entity, $foreignKey);
         });
     }
 
