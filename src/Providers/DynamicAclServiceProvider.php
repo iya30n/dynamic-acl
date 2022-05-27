@@ -60,7 +60,7 @@ class DynamicAclServiceProvider extends ServiceProvider
             return $userModel->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'hasAccessToEntity', function ($entity, $foreignKey = null) {
+        MacroableModels::addMacro($authModel, 'isOwner', function ($entity, $foreignKey = null) {
             if ( ! $entity instanceof Model && ! is_array($entity)) return true;
 
             if (is_array($entity)) {
@@ -97,7 +97,7 @@ class DynamicAclServiceProvider extends ServiceProvider
                 if ($hasAccess) break;
             }
 
-            return $hasAccess && $this->hasAccessToEntity($entity, $foreignKey);
+            return $hasAccess && $this->isOwner($entity, $foreignKey);
         });
     }
 

@@ -22,7 +22,7 @@ class Authorize
             return $next($request);
 
         foreach ($request->route()->parameters as $param) {
-            if ($user->hasAccessToEntity($param, $foreignKey)) continue;
+            if ($user->isOwner($param, $foreignKey)) continue;
 
             if (url()->previous() == url()->current())
                 return redirect('/');
