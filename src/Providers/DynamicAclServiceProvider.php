@@ -76,7 +76,7 @@ class DynamicAclServiceProvider extends ServiceProvider
                 $foreignKey ?? $this->getForeignKey()
             );
 
-            return $relationId == $entity->getOriginal($this->getKeyName());
+            return $relationId == $this->getOriginal($this->getKeyName());
         });
 
         MacroableModels::addMacro($authModel, 'hasPermission', function (string $access, $entity = null, $foreignKey = null) {
