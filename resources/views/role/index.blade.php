@@ -13,7 +13,7 @@
 				<h3 class="card-title">{{__('dynamicACL::roles.list_title')}}</h3>
 
 				<div class="card-tools">
-					@if(auth()->user()->hasPermission('roles.create'))
+					@if(auth()->user()->hasPermission('admin.roles.create'))
 					<a href="{{ route('admin.roles.create') }}" role="button"
 						class="btn btn-success btn-sm btn-rounded">{{__('dynamicACL::roles.create_role')}}</a>
 					@endif
