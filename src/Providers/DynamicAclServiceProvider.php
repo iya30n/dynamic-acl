@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 use Iya30n\DynamicAcl\ACL;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
@@ -81,9 +82,6 @@ class DynamicAclServiceProvider extends ServiceProvider
 
         MacroableModels::addMacro($authModel, 'hasPermission', function (string $access, $entity = null, $foreignKey = null) {
             if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
-
-            if ($access != 'fullAccess' && ! Route::has($access))
-                throw new RouteNotFoundException("Route not found with name: \"$access\" ");
 
             if( ! $this->allRoles)
                 $this->allRoles = $this->roles()->get();
