@@ -125,6 +125,22 @@ with custom relation_key (default is 'user_id'):
 $user->hasPermission('admin.articles.update', $article, 'owner_id');
 ```
 
+<h3>check user is owner of an entity manually</h3>
+```php
+$user->isOwner($article);
+```
+with custom relation_key:
+```php
+$user->isOwner($article, 'owner_id');
+```
+you can pass it as ['model' => id]:
+```php
+$user->isOwner(['article' => $article->id]);
+
+// or with a custom model path
+$user->isOwner(['App\\Article' => $article->id]);
+```
+
 
 ---
 
