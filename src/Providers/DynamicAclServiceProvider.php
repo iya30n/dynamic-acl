@@ -66,7 +66,7 @@ class DynamicAclServiceProvider extends ServiceProvider
 
             if (is_array($entity)) {
                 $entityName = array_key_first($entity);
-                $modelNamespace = "\\App\\Models\\" . ucfirst($entityName);
+                $modelNamespace = Str::contains($entityName, '\\') ? $entityName : "\\App\\Models\\" . ucfirst($entityName);
 
                 if (! class_exists($modelNamespace)) return true;
 
