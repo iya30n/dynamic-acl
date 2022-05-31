@@ -5,114 +5,124 @@
 @endsection
 
 @section('content')
-    <!-- Main content -->
+<!-- Main content -->
+<form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
+    @csrf
+    @method('PATCH')
     <div class="row">
-        <!-- left column -->
-        <div class="col-md-12">
-            <!-- general form elements -->
-            <!-- form start -->
-            <form class="form-horizontal" method="POST" action="{{ route('admin.roles.update', $role->id) }}">
-            @csrf
-            @method('PATCH')
 
-            <!-- role name -->
-                <div class="row">
-                    <div class="col col-md-4">
-                        <div class="form-group">
-                            <input type="text" placeholder="{{__('dynamicACL::roles.insert_role_name')}}" name="name" class="form-control"
-                                   value="{{ old('name', $role->name) }}">
-                        </div>
-                    </div>
-                    <!-- /col-md-4 -->
+        <div class="col-md-4">
+            <div class="form-group">
+                <input id="route" type="text" placeholder="{{__('dynamicACL::roles.insert_role_name')}}" name="name" class="form-control rounded"
+                value="{{ old('name', $role->name) }}">
+            </div>
+        </div>
 
-                    <div class="col col-md-4">
-                        @if(auth()->user()->hasPermission('admin.roles.store'))
-                            <div class="form-group"><input type="submit" class="btn btn-sm btn-rounded btn-success"
-                                                           value="{{__('dynamicACL::roles.update_role')}}">
-                            </div>
-                        @endif
-                    </div>
-                    <!-- /col-md-4 -->
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="form-check text-left col-md-4">
+                    <input type="checkbox" class="form-check-input"
+                            id="permission_check_fullAccess"
+                            name="fullAccess"
+                            {{ (isset($role->permissions['fullAccess']) && $role->permissions['fullAccess'] == 1) ? 'checked' : '' }}
+                            value="1">
 
+                    <label class='form-check-label' for="permission_check_fullAccess">{{__('Full Access')}}</label>
                 </div>
-                <!-- /role name -->
+            </div>
+        </div>
 
-                <div class="row">
-                    <div class="col col-md-4">
-                        <div class="card">
-                            <div class="card-header text-center">{{__('dynamicACL::roles.default_permissions')}}</div>
+        <div class="col col-md-1">
+            @if(auth()->user()->hasPermission('admin.roles.update'))
+                <div class="form-group"><input type="submit" class="btn btn-md btn-rounded btn-success"
+                    value="{{__('dynamicACL::roles.update_role')}}"></div>
+            @endif
+        </div>
+    </div>
 
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <ul>
-                                            <li>
-                                                <input class="form-check-input"
-                                                       type="checkbox"
-                                                       id="permission_check_full_access"
-                                                       name="access[fullAccess]"
-                                                       {{ (isset($role->permissions['fullAccess']) && $role->permissions['fullAccess'] == 1) ? 'checked' : '' }}
-                                                       value="1">
-                                                <label class="form-check-label" for="permission_check_full_access">{{__('dynamicACL::roles.full_access')}}</label>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+    <div class="row">
+        @foreach($permissions as $key => $value)
+        @php
+        $hasAdminDotPrefix = strpos($key, 'admin.') !== false;
+
+        $dashKey = str_replace('.', '-', $key);
+        $entityName = $hasAdminDotPrefix ? ucfirst(str_replace('admin.', '', $key)) : ucfirst($key);
+        @endphp
+        <div class="col-md-4 col-sm-12">
+            <div class="card text-left" style="height: 100%;">
+
+                <div class="mt-3 ml-1">
+
+                    <div class="form-check d-flex justify-content-between w-100">
+
+                        <div class="@if(config('easy_panel.rtl_mode')) mr-2 @endif">
+                            <h4 class="align-self-center">{{ __($entityName) }}</h4>
                         </div>
+
+                        <div class="@if(config('easy_panel.rtl_mode')) ml-1 @endif">
+                            <input type="checkbox" class="form-check-input" onchange="selectAll(this, '{{$dashKey}}')">
+                        </div>
+
                     </div>
                 </div>
+                <!-- /card header -->
 
-                <div class="row">
-                    @foreach($permissions as $key => $value)
-                        <div class="col col-md-4">
+                <hr style="width:98%;">
 
-                            <div class="card">
+                <div class="card-body row">
+                    @foreach($value as $keyAccess)
+                    <?php $check = isset($role->permissions[$key][$keyAccess['name']]); ?>
+                    <div class="form-check d-flex justify-content-between w-100">
 
-                                <div class="card-header text-center">
-                                    {{ str_replace('.', ' => ', $key) }}
-                                </div>
-                                <!-- /card header -->
-
-                                <div class="card-body">
-                                    <div class="row">
-
-                                        <div class="col-12">
-                                            <ul style="column-count: 4; column-gap: 2rem; list-style: none; font-size: 13px;">
-                                                @foreach($value as $keyAccess)
-                                                    <?php $check = isset($role->permissions[$key][$keyAccess['name']]); ?>
-                                                    <li>
-                                                        <input class="form-check-input"
-                                                               type="checkbox"
-                                                               id="permission_check_{{$keyAccess['name']}}"
-                                                               name="access[{{$key}}][{{$keyAccess['name']}}]"
-                                                               {{ $check ? 'checked' : '' }}
-                                                               value="1">
-                                                        <label class="form-check-label" for="permission_check_{{$keyAccess['name']}}">{{ $keyAccess['name'] }}</label>
-                                                    </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                        <!-- /col-12 -->
-
-                                    </div>
-                                    <!-- /row -->
-
-
-                                </div>
-                                <!-- /card body -->
-
-                            </div>
-                            <!-- /card -->
-
+                        <div>
+                            <label class="form-check-label align-self-center"
+                                for="permission_check_{{$dashKey}}_{{$keyAccess['name']}}">{{ __(ucfirst($keyAccess['name'])) }}</label>
                         </div>
-                        <!-- /col-md-4 -->
+
+                        <div>
+                            <input type="checkbox" class="form-check-input {{$dashKey}}"
+                                id="permission_check_{{$dashKey}}_{{$keyAccess['name']}}"
+                                name="access[{{$key}}][{{$keyAccess['name']}}]"
+                                {{ $check ? 'checked' : '' }}
+                                value="1">
+                        </div>
+
+                    </div>
                     @endforeach
                 </div>
-
-            </form>
+                <!-- /card-body -->
+            </div>
         </div>
-        <!--/.col (left) -->
+        <!-- /col-md-4 -->
+        @endforeach
     </div>
-    <!-- /.row -->
+</form>
+<!-- /.row -->
 @endsection
+
+
+
+<!-- <style>
+    @ if(!config('easy_panel.rtl_mode'))
+    .form-check {
+        padding: 0;
+    }
+    @ endif
+
+    .selectAll {
+        margin-left: -30px;
+    }
+</style> -->
+
+
+<!-- <script>
+
+    function selectAll(selectAll, dashKey) {
+        document.querySelectorAll('.' + dashKey).forEach(item => {
+            if(item.checked !== selectAll.checked)
+                item.click()
+        })
+    }
+
+</script> -->
+
