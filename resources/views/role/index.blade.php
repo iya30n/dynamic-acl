@@ -9,13 +9,13 @@
     <div class="col-1"></div>
 	<div class="col-10">
 		<div class="card">
-			<div class="card-header" style="background: white; color: #212529;">
+			<div class="card-header" style="background: white; color: #65676a;">
 				<h3 class="card-title">{{__('dynamicACL::roles.list_title')}}</h3>
 
 				<div class="card-tools">
 					@if(auth()->user()->hasPermission('admin.roles.create'))
 					<a href="{{ route('admin.roles.create') }}" role="button"
-						class="btn btn-success btn-sm btn-rounded">{{__('dynamicACL::roles.create_role')}}</a>
+						class="btn btn-success btn-rounded">{{__('dynamicACL::roles.create_role')}}</a>
 					@endif
 				</div>
 			</div>
@@ -23,8 +23,8 @@
 			<div class="card-body table-responsive p-0">
 				<table class="table table-hover">
 					<tr>
-						<th>{{__('dynamicACL::roles.role_name')}}</th>
-						<th>{{__('dynamicACL::roles.users_count')}}</th>
+						<th style="color: rgb(119, 119, 234)"><h5>{{__('dynamicACL::roles.role_name')}}</h5></th>
+						<th style="color: rgb(119, 119, 234)"><h5>{{__('dynamicACL::roles.users_count')}}</h5></th>
 						<th></th>
 					</tr>
 					@foreach($roles as $role)
