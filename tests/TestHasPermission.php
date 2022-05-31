@@ -65,6 +65,8 @@ class TestHasPermission extends TestCase
 		
 		$this->assertFalse($this->admin->hasPermission('admin.posts.show', $secondPost));
 
-		$this->assertFalse($this->admin->hasPermission('admin.posts.show', $firstPost, 'something_else_id'));
+		$this->expectException(Exception::class);
+
+		$this->admin->hasPermission('admin.posts.show', $firstPost, 'something_else_id');
 	}
 }

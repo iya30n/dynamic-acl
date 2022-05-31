@@ -35,6 +35,8 @@ class TestisOwner extends TestCase
 		
 		$this->assertFalse($this->admin->isOwner($secondPost));
 
+		$this->expectException(Exception::class);
+
 		$this->assertFalse($this->admin->isOwner($firstPost, 'something_else_id'));
 	}
 
@@ -67,6 +69,8 @@ class TestisOwner extends TestCase
         $this->assertTrue($this->admin->isOwner([Post::class => $firstPost->id]));
 
         $this->assertFalse($this->admin->isOwner([Post::class => $secondPost->id]));
+
+		$this->expectException(Exception::class);
 
         $this->assertFalse($this->admin->isOwner([Post::class => $firstPost->id], 'something_else_id'));
     }
