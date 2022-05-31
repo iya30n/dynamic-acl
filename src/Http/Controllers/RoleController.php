@@ -36,7 +36,7 @@ class RoleController extends Controller
             'permissions' => $permissions
         ]);
 
-//        flash()->success('پیغام', 'نقش با موفقیت ایجاد شد.');
+        // flash()->success('پیغام', 'نقش با موفقیت ایجاد شد.');
         return redirect()->route('admin.roles.index');
     }
 
@@ -59,7 +59,7 @@ class RoleController extends Controller
             'permissions' => $permissions
         ]);
         
-//        flash()->success('پیغام', 'نقش با موفقیت بروزرسانی شد.');
+        // flash()->success('پیغام', 'نقش با موفقیت بروزرسانی شد.');
         return redirect()->route('admin.roles.index');
     }
 
@@ -69,7 +69,7 @@ class RoleController extends Controller
 
         $role->delete();
 
-//        flash()->success('', 'نقش با موفقیت حذف شد.');
+        // flash()->success('', 'نقش با موفقیت حذف شد.');
         return back();
     }
 }
