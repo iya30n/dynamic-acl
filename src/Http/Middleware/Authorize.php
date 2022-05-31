@@ -21,7 +21,9 @@ class Authorize
         if ($user->hasPermission('fullAccess'))
             return $next($request);
 
-        foreach ($request->route()->parameters as $param) {
+        foreach ($request->route()->parameters as $key => $param) {
+            $param = $param instanceof Model ? $param : [$key => $param];
+
             if ($user->isOwner($param, $foreignKey)) continue;
 
             if (url()->previous() == url()->current())

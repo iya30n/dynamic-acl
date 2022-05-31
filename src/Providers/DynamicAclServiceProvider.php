@@ -2,6 +2,7 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -73,9 +74,11 @@ class DynamicAclServiceProvider extends ServiceProvider
                 $entity = app($modelNamespace)->findOrFail($entity[$entityName]);
             }
 
-            $relationId = $entity->getOriginal(
-                $foreignKey ?? $this->getForeignKey()
-            );
+            $foreignKey = $foreignKey ?? $this->getForeignKey();
+
+            $relationId = $entity->getOriginal($foreignKey);
+
+            throw_if($relationId === null, new Exception("\"$foreignKey\" is not defined on " . get_class($entity)));
 
             return $relationId == $this->getOriginal($this->getKeyName());
         });
