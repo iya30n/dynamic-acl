@@ -7,7 +7,7 @@ Dynamic ACL is a package that handles Access Control Level on your Laravel Appli
 - [Check Permissions](#check_routes): Check routes dynamically on admin permissions.
 - [Simple Policy](#simple_policy): Check user_id on your entities (if the admin has access to this).
 
-<h2 id="installation">Installation</h3>
+<h2 id="installation">Installation</h2>
 
 ### Prerequisite:
 
