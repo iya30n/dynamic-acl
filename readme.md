@@ -1,159 +1,131 @@
 # Dynamic ACL
 
-Dynamic ACL is a package that handles Access Control Level on your Laravel Application.
-
-It's fast to running and simple to use.
-
-<a href="#installation">Install</a> and enjoy.
-
----
+Dynamic ACL is a package that handles Access Control Level on your Laravel Application. It's fast to run and simple to use. [Install](#installation) and enjoy ;)
 
 ## Features
 
-- <a href="#check_routes">Check permissions:</a> Check routes dynamically on Admin permissions.
-- <a href="#simple_policy">Simple policy:</a> Check user_id on your entities (if admin has access to this).
+- [Check Permissions](#check_routes): Check routes dynamically on admin permissions.
+- [Simple Policy](#simple_policy): Check user_id on your entities (if the admin has access to this).
 
----
+<h2 id="installation">Installation</h3>
 
-<span id="installation"><h3>Installation</h3></span>
+### Prerequisite:
 
-> **NOTE:** you need to make your authentication (session based) system before.
-
-> **NOTE:** you should define name for your routes.
-
+- Make your authentication (session-based) system.
+- Define a name for your routes.
 
 ```php
 composer require iya30n/dynamic-acl
 ```
 
-
-### publish config file
+### Publish config file
 
 ```php
 php artisan vendor:publish
 ```
 
-### migrate roles table
+### Migrate roles table
 
 ```php
 php artisan migrate
 ```
 
-> Don't worry about relationships, they handled already.
+> Don't worry about relationships; We handle them for you.
 
-### run make:admin command
+### Run `make:admin` command
 
-this command makes your first admin as super admin with fullAccess level.
+This command makes your first admin a super admin with a full-access level.
 
 ```php
 php artisan make:admin --role
 ```
 
-### finish
+## Usage
 
-just run your application and visit **locahost:8000/admin/roles** .
+Just run your application and visit `locahost:8000/admin/roles`.
+You'll see a list of your roles. You can create a new one, edit or delete them.
 
-you'll see list of your roles.
+### Configuration
 
-you can create new one, edit or delete them.
+After publishing the vendor, you can change the configuration in the `config/dynamicACL.php` file.
 
----
+It has the following options:
 
-### config
+- **alignment:** Changes UI alignment. It can be eigther RTL or LTR. Also, when you change your lang, CRUD roles will change in (fa, en).
+- **controllers_path:** Namespace of your controllers.
+- **ignore_list:** List of routes to be ignored on permission check.
 
-after publish vendor you can change config on **config/dynamicACL.php** file.
+<h3 id="check_routes">How to use the ACL?</h3>
 
-- **alignment:** you can change UI alignment to rtl or ltr. also when you change your lang, roles CRUD will be changing in (fa, en).
-- **controllers_path:** this is your controllers namespace.
-- **ignore_list:** you can add your routes to be ignore on check permissions.
-
----
-
-<h3 id="check_routes">how to use the ACL?</h3>
-
-just add **dynamicAcl** middleware to your routes.
-> now you'll see list of the routes with **dynamicAcl** middleware on **localhost:8000/admin/roles/create**.
+Just add **dynamicAcl** middleware to your routes.
+> now you'll see list of the routes with **dynamicAcl** middleware on `localhost:8000/admin/roles/create`.
 >
-> also this middleware will check your admin access to current route.
----
-<h3 id="list_of_the_roles">access to the roles</h3>
-get list of the roles and use it on your own admin/user CRUD views.
+> also, this middleware will check your admin access to the current route.
 
-you can use Role model to write your own queries and get list of the roles.
+<h3 id="list_of_the_roles">Access to the roles</h3>
+
+You can write your queries with the Role model to get the list of roles and use it on your admin/user CRUD views.
 
 ```php
 use Iya30n\DynamicAcl\Models\Role;
 ```
 
----
-<h3 id="sync_user_roles">sync user roles</h3>
-you can use sync, attach, dettach method to assign roles to a user.
+<h3 id="sync_user_roles">Sync user roles</h3>
+
+You can use `sync`, `attach`, and `detach` methods to assign user roles.
 
 ```php
 $user->roles()->sync([1, 2, 3,...]);
 ```
 
----
-<h3 id="get_user_roles">get user roles</h3>
+<h3 id="get_user_roles">Get user roles</h3>
 
 ```php
 $user->roles()->get();
 ```
 
----
+<h3 id="check_user_access">Check user access manually</h3>
 
-<h3 id="check_user_access">check user access manually</h3>
-
-call hasPermission method on user and pass the route name.
+Call the `hasPermission` method on the user and pass the route name:
 
 ```php
 auth()->user()->hasPermission('admin.articles.create');
 ```
 
-check if user has access to any routes of an entity:
+Check whether the user has access to any routes of an entity:
+
 ```php
 auth()->user()->hasPermission('admin.articles.*')
 ```
 
-also you can check if user has access to his own entity:
+Also, you can check if the user has access to his entity:
+
 ```php
 $user->hasPermission('admin.articles.update', $article);
-```
 
-with custom relation_key (default is 'user_id'):
-```php
+// Or with a custom relation_key (default is 'user_id')
 $user->hasPermission('admin.articles.update', $article, 'owner_id');
 ```
 
-<h3>Check user is owner of an entity manually:</h3>
+### Check Ownership
+
+Check manually whether the user is the owner of an entity:
 
 ```php
 $user->isOwner($article);
-```
 
-with custom relation_key:
-```php
+// Or with a custom relation_key
 $user->isOwner($article, 'owner_id');
-```
 
-you can pass it as ['model' => id]:
-```php
+// Or pass it as ['model' => id]
 $user->isOwner(['article' => $article->id]);
 
-// or with a custom model path
+// Or with a custom model path
 $user->isOwner(['App\\Article' => $article->id]);
 ```
 
+<h3 id="simple_policy">Dynamic Policy</h3>
 
----
+Using dynamic policy is straightforward too. Just add **authorize** middleware to your routes. You can pass the foreign key as a parameter (default is user_id). This middleware checks the foreign key of your entity.
 
-<h3 id="simple_policy">how to use dynamic policy?</h3>
-
-> **NOTE:** you should use route model binding on your controllers.
-
-it's very simple too.
-
-just add **authorize** middleware to your routes.
-it gets a parameter as a foreign key (default is user_id).
-
-> this middleware will check the foreign key on your entity.
+> **NOTE:** It is necessary to use route model binding on your controllers.
