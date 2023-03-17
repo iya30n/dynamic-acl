@@ -40,6 +40,11 @@ class TestisOwner extends TestCase
 		$this->assertFalse($this->admin->isOwner($firstPost, 'something_else_id'));
 	}
 
+    public function test_something_else()
+    {
+        $this->assertTrue(true);
+    }
+
     public function test_if_user_has_access_to_specific_post_array_param()
     {
         $role = Role::create([

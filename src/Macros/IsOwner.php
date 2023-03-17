@@ -4,6 +4,7 @@ namespace Iya30n\DynamicAcl\Macros;
 
 use Illuminate\Support\Str;
 use Exception;
+use Illuminate\Database\Eloquent\Model;
 
 class IsOwner
 {
