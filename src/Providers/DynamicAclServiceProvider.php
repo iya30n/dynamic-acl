@@ -2,20 +2,16 @@
 
 namespace Iya30n\DynamicAcl\Providers;
 
-use Exception;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
-use Iya30n\DynamicAcl\ACL;
+use Iya30n\DynamicAcl\Macros\HasPermission;
+use Iya30n\DynamicAcl\Macros\IsOwner;
 use Iya30n\DynamicAcl\Models\Role;
 use Illuminate\Support\ServiceProvider;
 use Iya30n\DynamicAcl\Http\Middleware\{Admin, Authorize};
 use Iya30n\DynamicAcl\Console\Commands\MakeAdmin;
 use Iya30n\DynamicAcl\Separators\Separator;
 use \Javoscript\MacroableModels\Facades\MacroableModels;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class DynamicAclServiceProvider extends ServiceProvider
 {
@@ -30,7 +26,7 @@ class DynamicAclServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../config/dynamicACL.php' => config_path('dynamicACL.php'),
-            
+
             __DIR__ . '/../../database/migrations/2019_10_03_999999_create_roles_table.php' => base_path('/database/migrations/' . date('Y_m_d') . '_999999_create_roles_table.php'),
         ]);
 
@@ -62,44 +58,9 @@ class DynamicAclServiceProvider extends ServiceProvider
             return $userModel->belongsToMany(Role::class);
         });
 
-        MacroableModels::addMacro($authModel, 'isOwner', function ($entity, $foreignKey = null) {
-            if ( ! $entity instanceof Model && ! is_array($entity)) return true;
+        MacroableModels::addMacro($authModel, 'isOwner', IsOwner::GetMacro());
 
-            if (is_array($entity)) {
-                $entityName = array_key_first($entity);
-                $modelNamespace = Str::contains($entityName, '\\') ? $entityName : "\\App\\Models\\" . ucfirst($entityName);
-
-                if (! class_exists($modelNamespace)) return true;
-
-                $entity = app($modelNamespace)->findOrFail($entity[$entityName]);
-            }
-
-            $foreignKey = $foreignKey ?? $this->getForeignKey();
-
-            $relationId = $entity->getOriginal($foreignKey);
-
-            throw_if($relationId === null, new Exception("\"$foreignKey\" is not defined on " . get_class($entity)));
-
-            return $relationId == $this->getOriginal($this->getKeyName());
-        });
-
-        MacroableModels::addMacro($authModel, 'hasPermission', function (string $access, $entity = null, $foreignKey = null) {
-            if (in_array($access, config('dynamicACL.ignore_list', []))) return true;
-
-            if( ! $this->allRoles)
-                $this->allRoles = $this->roles()->get();
-
-            $hasAccess = false;
-            foreach ($this->allRoles as $role) {
-                if (ACL::checkAccess('fullAccess', $role->permissions)) return true;
-                
-                $hasAccess = ACL::checkAccess($access, $role->permissions);
-
-                if ($hasAccess) break;
-            }
-
-            return $hasAccess && $this->isOwner($entity, $foreignKey);
-        });
+        MacroableModels::addMacro($authModel, 'hasPermission', HasPermission::GetMacro());
     }
 
     private function registerMiddlewares()
@@ -120,10 +81,10 @@ class DynamicAclServiceProvider extends ServiceProvider
 
     protected function registerViewComposers()
     {
-       View::composer('dynamicACL::layout', function($view) {
-           $view->with([
-               'alignment' => config('dynamicACL.alignment', 'ltr')
-           ]);
-       });
+        View::composer('dynamicACL::layout', function ($view) {
+            $view->with([
+                'alignment' => config('dynamicACL.alignment', 'ltr')
+            ]);
+        });
     }
 }
