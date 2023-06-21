@@ -15,8 +15,8 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "laravel/framework":"9.*|10.*",
+        "php": "^7.3|^8.0",
+        "laravel/framework": "^8.0|^9.0|^10.0",
         "javoscript/laravel-macroable-models": "^1.0"
     },
     "extra": {
